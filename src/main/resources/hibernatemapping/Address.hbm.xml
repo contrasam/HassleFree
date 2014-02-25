@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+        
+<hibernate-mapping package="com.soen.hasslefree.models">
+ 
+    <class name="Address" table="address">
+      <meta attribute="class-description">
+         This class contains the address detail. 
+      </meta>
+          
+        <id name="addressId"  type="long" column="addressId">
+            <generator class="increment"/>
+        </id>
+        
+        <property name="streetNumber"  column ="streetNumber" type="string"/>
+        <property name="streetName" column="streetName" type="string"/>
+        <property name="apartmentNumber" column="apartmentNumber" type="string"/>
+        <property name="city" column="city" type="string"/>
+        <property name="province" column="province" type="string"/>
+        <property name="postalCode" column="postalCode" type="string"/>
+        <property name="country" column="country" type="string"/>
+    </class> 
+       
+   </hibernate-mapping>
