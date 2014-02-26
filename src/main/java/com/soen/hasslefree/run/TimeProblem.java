@@ -49,14 +49,14 @@ public class TimeProblem {
         session.beginTransaction();
         
         // Creating address for the clinic
-        Address address = new Address();
-        address.setApartmentNumber("1502");
-        address.setCity("Montreal");
-        address.setCountry("Canada");
-        address.setPostalCode("H3H 2J2");
-        address.setProvince("Quebec");
-        address.setStreetName("St Mathieu");
-        address.setStreetNumber("2055");
+//        Address address = new Address();
+//        address.setApartmentNumber("1502");
+//        address.setCity("Montreal");
+//        address.setCountry("Canada");
+//        address.setPostalCode("H3H 2J2");
+//        address.setProvince("Quebec");
+//        address.setStreetName("St Mathieu");
+//        address.setStreetNumber("2055");
         
         // Creating a room for the clinic
         Room room = new Room();
@@ -65,7 +65,7 @@ public class TimeProblem {
         ArrayList<Room> roomList = new ArrayList();
         roomList.add(room);
         Clinic clinic = new Clinic();
-        clinic.setAddress(address);
+//        clinic.setAddress(address);
         clinic.setName("Ville Marie Clinic");
         clinic.setRooms(roomList);
         

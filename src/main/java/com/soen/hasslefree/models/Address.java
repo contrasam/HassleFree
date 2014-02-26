@@ -5,11 +5,17 @@
  */
 package com.soen.hasslefree.models;
 
+import com.soen.hasslefree.dao.AddressDao;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
 /**
  *
  * @author PradeepSamuel
  */
-public class Address {
+@ManagedBean
+@RequestScoped
+public class Address implements java.io.Serializable {
 
     private long addressId;
     private String streetNumber;
@@ -20,6 +26,9 @@ public class Address {
     private String postalCode;
     private String country;
 
+    public Address() {
+    }
+
     public Address(String streetNumber, String streetName, String apartmentNumber, String city, String province, String postalCode, String country) {
         this.streetNumber = streetNumber;
         this.streetName = streetName;
@@ -28,10 +37,6 @@ public class Address {
         this.province = province;
         this.postalCode = postalCode;
         this.country = country;
-    }
-
-    public Address() {
-
     }
 
     public long getAddressId() {
@@ -98,4 +103,13 @@ public class Address {
         this.country = country;
     }
 
+    public void saveAddress() {
+        try {
+            AddressDao address = new AddressDao();
+            address.addAddress(this);
+            System.out.println("Address saved to database");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

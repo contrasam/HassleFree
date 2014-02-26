@@ -11,8 +11,17 @@ package com.soen.hasslefree.models;
  */
 public class Patient extends User {
 
+    private long patientId;
     private String healthCardNumber;
     private Doctor familyDoctor;
+
+    public long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(long patientId) {
+        this.patientId = patientId;
+    }
 
     public String getHealthCardNumber() {
         return healthCardNumber;

@@ -6,6 +6,7 @@
 package com.soen.hasslefree.models;
 
 
+import com.soen.hasslefree.dao.UserDao;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 public class User implements Serializable{
 
+    private long userId;
     private String email;
     private String password;
     private String firstName;
@@ -23,6 +25,14 @@ public class User implements Serializable{
     private Date dateOfBirth;
     private Address homeAddress;
     private String phoneNumber;
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -87,6 +97,14 @@ public class User implements Serializable{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    
+    public void saveUser() {
+        try {
+            UserDao user = new UserDao();
+            user.addUser(this);
+            System.out.println("User saved to database");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
 }
