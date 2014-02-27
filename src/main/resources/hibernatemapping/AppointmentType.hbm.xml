@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+        
+<hibernate-mapping package="com.soen.hasslefree.models">
+    <class name="AppointmentType" table="appointmentType">
+        <id name="appointmentTypeId"  type="long" column="appointmentTypeId">
+            <generator class="increment"/>
+        </id>  
+        <property name="typeName"  column ="typeName" type="string"/>
+        <property name="duration" column="duration" type="integer"/>
+        <property name="cost" column="cost" type="float"/>
+    </class> 
+</hibernate-mapping>

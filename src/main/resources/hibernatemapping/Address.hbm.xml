@@ -32,7 +32,7 @@
                      not-null="true"/>
         <property name="phoneNumber"  column ="phoneNumber" type="string"/>
     </class> 
-    <class name="Patient" table="patient">
+<!--    <class name="Patient" table="patient">
         <id name="patientId" column="userId">
             <generator class="native" />
         </id>
@@ -40,5 +40,5 @@
         <property name="familyDoctor"  column ="familyDoctor" column="doctorId" 
                   unique="true"
                   not-null="true" />
-    </class>  
+    </class> --> 
 </hibernate-mapping>

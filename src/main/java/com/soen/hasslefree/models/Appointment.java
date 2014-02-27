@@ -7,16 +7,23 @@ package com.soen.hasslefree.models;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 /**
  *
  * @author Khalid
  */
+@ManagedBean
+@RequestScoped
 public class Appointment {
 
     private TimeSlot appointmentSlot;
     private AppointmentType appointmentType;
 
+    public Appointment() {
+    }
+    
     public Appointment(int year, int month, int day, int startHour, int startMinutes, String appointmentType) {
         this.appointmentType = new AppointmentType();
         this.appointmentType.setTypeName(appointmentType);
@@ -27,6 +34,14 @@ public class Appointment {
         this.appointmentSlot.setEnd(tempCalendar);
     }
 
+    public AppointmentType getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(AppointmentType appointmentType) {
+        this.appointmentType = appointmentType;
+    }
+    
     public TimeSlot getAppointmentSlot() {
         return appointmentSlot;
     }

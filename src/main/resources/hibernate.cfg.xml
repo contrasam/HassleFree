@@ -17,5 +17,6 @@
     <property name="hbm2ddl.auto">update</property>
     <!-- List of XML mapping files -->
     <mapping resource="./hibernatemapping/Address.hbm.xml"/>
+    <mapping resource="./hibernatemapping/AppointmentType.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
