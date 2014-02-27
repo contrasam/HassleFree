@@ -7,7 +7,7 @@ package com.soen.hasslefree.models;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Clinic implements Serializable {
     private long clinicId;
     private String name;
     private Address address;
-    private ArrayList<Room> rooms;
+    private Set<Room> rooms;
 
   
     public long getClinicId() {
@@ -50,10 +50,10 @@ public class Clinic implements Serializable {
 
     
 
-    public ArrayList<Room> getRooms() {
+    public Set<Room> getRooms() {
         return rooms;
     }
-    public void setRooms(ArrayList<Room> rooms) {
+    public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
 }

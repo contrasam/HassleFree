@@ -10,6 +10,8 @@ import com.soen.hasslefree.models.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.Session;
 
 /**
@@ -21,6 +23,7 @@ public class TimeProblem {
     /**
      * @param args the command line arguments
      */
+    @SuppressWarnings("empty-statement")
     public static void main(String[] args) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         TimeSlot ts;
@@ -62,7 +65,7 @@ public class TimeProblem {
         Room room = new Room();
         room.setRoomNumber("905");
         
-        ArrayList<Room> roomList = new ArrayList();
+        Set<Room> roomList = new HashSet<Room>();;
         roomList.add(room);
         Clinic clinic = new Clinic();
 //        clinic.setAddress(address);
