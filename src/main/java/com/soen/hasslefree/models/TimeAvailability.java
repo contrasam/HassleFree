@@ -5,7 +5,8 @@
  */
 package com.soen.hasslefree.models;
 
-import java.util.ArrayList;
+import java.util.Set;
+
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class TimeAvailability {
 
     private String availabilityType;
-    private ArrayList<TimeSlot> availableSlots;
+    private Set<TimeSlot> availableSlots;
 
     public String getAvailabilityType() {
         return availabilityType;
@@ -24,11 +25,11 @@ public class TimeAvailability {
         this.availabilityType = availabilityType;
     }
 
-    public ArrayList<TimeSlot> getAvailableSlots() {
+    public Set<TimeSlot> getAvailableSlots() {
         return availableSlots;
     }
 
-    public void setAvailableSlots(ArrayList<TimeSlot> availableSlots) {
+    public void setAvailableSlots(Set<TimeSlot> availableSlots) {
         this.availableSlots = availableSlots;
     }
 

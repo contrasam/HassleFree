@@ -5,16 +5,23 @@
  */
 package com.soen.hasslefree.models;
 
-
 import com.soen.hasslefree.dao.UserDao;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 /**
  *
  * @author PradeepSamuel
  */
-public class User implements Serializable{
+@ManagedBean
+@RequestScoped
+public class User implements Serializable {
 
     private long userId;
     private String email;
@@ -25,6 +32,9 @@ public class User implements Serializable{
     private Date dateOfBirth;
     private Address homeAddress;
     private String phoneNumber;
+
+    private String simpleDate, message, selectedname;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 
     public long getUserId() {
         return userId;
@@ -97,14 +107,84 @@ public class User implements Serializable{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     public void saveUser() {
         try {
-            UserDao user = new UserDao();
-            user.addUser(this);
-            System.out.println("User saved to database");
+            Date dateOfBirth = simpleDateFormat.parse(simpleDate);
+            this.dateOfBirth = dateOfBirth;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            UserDao dao = new UserDao();
+            dao.addUser(this);
+            this.message = "User Info Saved Successfull!";
+            clearAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        clearAll();
     }
+
+    public void updateCustomer() {
+             try {
+            Date dateOfBirth = simpleDateFormat.parse(simpleDate);
+            this.dateOfBirth = dateOfBirth;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            UserDao dao = new UserDao();
+            dao.updateUser(this);
+            this.message = "User Info Update Successfull!";
+            clearAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            clearAll();
+        }
     
+
+    public void deleteUser() {
+        try {
+        UserDao dao = new UserDao();
+        dao.deleteUser(userId);
+         this.message = "User Info Deleted Successfull!";
+         } catch (Exception e) {
+            e.printStackTrace();
+        }
+            clearAll(); 
+    }
+
+    public void setSelectedname(String selectedname) {
+        this.selectedname = selectedname;
+    }
+
+    public Set<User> getAllCustomers() {
+        Set<User> users = new HashSet<User>();
+        UserDao dao = new UserDao();
+        users = dao.getAllUsers();
+        return users;
+    }
+
+//    public void fullInfo() {
+//        UserDao dao = new UserDao();
+//        Set<User> lc = dao.getUserById(selectedname);
+//        System.out.println(lc.get(0).firstName);
+//        this.userId = lc get(0).custId;
+//        this.firstName = lc.get(0).firstName;
+//        this.lastName = lc.get(0).lastName;
+//        this.email = lc.get(0).email;
+//        this.dateOfBirth = lc.get(0).dob;
+//        this.simpleDate = sdf.format(dob);
+//    }
+
+    private void clearAll() {
+        this.firstName = "";
+        this.lastName = "";
+        this.simpleDate = "";
+        this.email = "";
+        this.userId = 0;
+    }
+
 }
