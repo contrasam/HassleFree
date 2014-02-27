@@ -16,22 +16,7 @@
         <property name="postalCode" column="postalCode" type="string"/>
         <property name="country" column="country" type="string"/>
     </class> 
-    <class name="User" table="user">
-        <id name="userId"  type="long" column="userId">
-            <generator class="increment"/>
-        </id>
-        <property name="email"  column ="email" type="string"/>
-        <property name="password"  column ="password" type="string"/>
-        <property name="firstName"  column ="firstName" type="string"/>
-        <property name="lastName"  column ="lastName" type="string"/>
-        <property name="gender"  column ="gender" type="string"/>
-        <property name="dateOfBirth"  column ="dateOfBirth" type="date"/>
-        <many-to-one name="homeAddress" 
-                     column="addressId" 
-                     unique="true"
-                     not-null="true"/>
-        <property name="phoneNumber"  column ="phoneNumber" type="string"/>
-    </class> 
+    
     <class name="Patient" table="patient">
         <id name="patientId" column="userId">
             <generator class="native" />

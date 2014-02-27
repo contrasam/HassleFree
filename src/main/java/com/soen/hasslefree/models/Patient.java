@@ -13,7 +13,7 @@ public class Patient extends User {
 
     private long patientId;
     private String healthCardNumber;
-    private Doctor familyDoctor;
+    private Physician familyDoctor;
 
     public long getPatientId() {
         return patientId;
@@ -31,11 +31,11 @@ public class Patient extends User {
         this.healthCardNumber = healthCardNumber;
     }
 
-    public Doctor getFamilyDoctor() {
+    public Physician getFamilyDoctor() {
         return familyDoctor;
     }
 
-    public void setFamilyDoctor(Doctor familyDoctor) {
+    public void setFamilyDoctor(Physician familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 

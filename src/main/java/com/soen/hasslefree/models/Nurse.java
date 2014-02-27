@@ -12,5 +12,15 @@ package com.soen.hasslefree.models;
  */
 public class Nurse extends Staff {
     
+    private String degree;
+
+    public String getDegree() {
+        return degree;
+    }
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+    
+    
     
 }
