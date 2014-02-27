@@ -10,7 +10,7 @@ package com.soen.hasslefree.models;
  *
  * @author Khalid
  */
-public class Nurse extends Staff {
+public class Nurse extends User {
     
     private String degree;
 

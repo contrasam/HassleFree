@@ -6,6 +6,7 @@
 package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.AddressDao;
+import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -25,6 +26,7 @@ public class Address implements java.io.Serializable {
     private String province;
     private String postalCode;
     private String country;
+    private Set<Patient> patients;
 
     public Address() {
     }
@@ -103,6 +105,14 @@ public class Address implements java.io.Serializable {
         this.country = country;
     }
 
+    public Set<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(Set<Patient> patients) {
+        this.patients = patients;
+    }
+
     public void saveAddress() {
         try {
             AddressDao address = new AddressDao();
@@ -112,4 +122,5 @@ public class Address implements java.io.Serializable {
             e.printStackTrace();
         }
     }
+    
 }

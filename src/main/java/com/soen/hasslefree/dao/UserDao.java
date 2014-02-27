@@ -92,15 +92,15 @@ public class UserDao {
         return users;
     }
 
-    public Set<User> getUserById(String userId) {
+    public Set<User> getUserById(long userId) {
 
         Transaction transaction = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            String queryString = "from user where concat(first_name, ' ', last_name) = :id";
+            String queryString = "from user where addressId  = :id";
             Query query = session.createQuery(queryString);
-            query.setString("id", userId);
+            query.setLong("id", userId);
             //cust = (Customer) query.uniqueResult();
             Set<User> userSet = (Set) query.list();
             if (userSet.size() > 0) {

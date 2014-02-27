@@ -15,15 +15,15 @@
         <property name="province" column="province" type="string"/>
         <property name="postalCode" column="postalCode" type="string"/>
         <property name="country" column="country" type="string"/>
+         
+         <set name="associatedPatients" table="patient"
+                 inverse="true" lazy="true" fetch="select">
+                <key>
+                    <column name="userId" not-null="true" />
+                </key>
+                <one-to-many class="com.soen.hasslefree.models.Patient" />
+            </set>
     </class> 
     
-    <class name="Patient" table="patient">
-        <id name="patientId" column="userId">
-            <generator class="native" />
-        </id>
-        <property name="healthCardNumber"  column ="healthCardNumber" type="string"/>
-        <property name="familyDoctor"  column ="familyDoctor" column="doctorId" 
-                  unique="true"
-                  not-null="true" />
-    </class>  
+ 
 </hibernate-mapping>

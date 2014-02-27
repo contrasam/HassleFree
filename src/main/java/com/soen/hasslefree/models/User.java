@@ -109,12 +109,12 @@ public class User implements Serializable {
     }
 
     public void saveUser() {
-        try {
-            Date dateOfBirth = simpleDateFormat.parse(simpleDate);
-            this.dateOfBirth = dateOfBirth;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Date dateOfBirth = simpleDateFormat.parse(simpleDate);
+//            this.dateOfBirth = dateOfBirth;
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         try {
             UserDao dao = new UserDao();
             dao.addUser(this);
@@ -126,7 +126,7 @@ public class User implements Serializable {
         clearAll();
     }
 
-    public void updateCustomer() {
+    public void updateUser() {
              try {
             Date dateOfBirth = simpleDateFormat.parse(simpleDate);
             this.dateOfBirth = dateOfBirth;
@@ -160,7 +160,7 @@ public class User implements Serializable {
         this.selectedname = selectedname;
     }
 
-    public Set<User> getAllCustomers() {
+    public Set<User> getAllUsers() {
         Set<User> users = new HashSet<User>();
         UserDao dao = new UserDao();
         users = dao.getAllUsers();

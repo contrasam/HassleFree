@@ -94,7 +94,7 @@ public class NurseDao {
         return nurses;
     }
 
-    public Set<Nurse> getUserById(String nurseId) {
+    public Set<Nurse> getUserById(long nurseId) {
 
         Transaction transaction = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -102,7 +102,7 @@ public class NurseDao {
             transaction = session.beginTransaction();
             String queryString = "from nurse where concat(first_name, ' ', last_name) = :id";
             Query query = session.createQuery(queryString);
-            query.setString("id", nurseId);
+            query.setLong("id", nurseId);
             //cust = (Customer) query.uniqueResult();
             Set<Nurse> nurseSet = (Set) query.list();
             if (nurseSet.size() > 0) {
