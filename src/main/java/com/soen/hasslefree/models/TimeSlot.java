@@ -57,21 +57,21 @@ public class TimeSlot {
         return timeList;
     }
 
-    public ArrayList<Long> excludeBlockedIntervals(ArrayList<Long> timeList, ArrayList<Appointment> appointmentList) {
-        // time.before(appointment.getApointmentSlot().getEnd()) && time.after(appointment.getApointmentSlot().getStart())
-        ArrayList<Long> excludedTimes = new ArrayList();
-        for (long time : timeList) {
-            for (Appointment appointment : appointmentList) {
-                long startTimeInMilSeconds =  appointment.getAppointmentSlot().start.getTimeInMillis();
-                long endTimeInMilSeconds =  appointment.getAppointmentSlot().end.getTimeInMillis();
-                
-                if (time >= startTimeInMilSeconds && time <= endTimeInMilSeconds) {
-                    excludedTimes.add(time);
-                }
-            }
-        }
-        return excludedTimes;
-    }
+//    public ArrayList<Long> excludeBlockedIntervals(ArrayList<Long> timeList, ArrayList<Appointment> appointmentList) {
+//        // time.before(appointment.getApointmentSlot().getEnd()) && time.after(appointment.getApointmentSlot().getStart())
+//        ArrayList<Long> excludedTimes = new ArrayList();
+//        for (long time : timeList) {
+//            for (Appointment appointment : appointmentList) {
+//                long startTimeInMilSeconds =  appointment.getAppointmentSlot().start.getTimeInMillis();
+//                long endTimeInMilSeconds =  appointment.getAppointmentSlot().end.getTimeInMillis();
+//                
+//                if (time >= startTimeInMilSeconds && time <= endTimeInMilSeconds) {
+//                    excludedTimes.add(time);
+//                }
+//            }
+//        }
+//        return excludedTimes;
+//    }
     
     
     

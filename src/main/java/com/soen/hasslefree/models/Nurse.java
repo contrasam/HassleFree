@@ -3,24 +3,60 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.soen.hasslefree.models;
+
+import com.soen.hasslefree.dao.ObjectDao;
+import java.io.Serializable;
+import java.util.ArrayList;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 /**
  *
  * @author Khalid
  */
-public class Nurse extends User {
-    
+@ManagedBean
+@RequestScoped
+        
+@Entity
+@Table
+@PrimaryKeyJoinColumn(name = "userId")
+public class Nurse extends User implements Serializable {
+
+    @Column
     private String degree;
 
     public String getDegree() {
         return degree;
     }
+
     public void setDegree(String degree) {
         this.degree = degree;
     }
-    
-    
-    
+    public void saveNurse() {
+        ObjectDao nurseDao = new ObjectDao();
+        nurseDao.addObject(this);
+    }
+
+    public void updateNurse() {
+        ObjectDao nurseDao = new ObjectDao();
+        nurseDao.updateObject(this);
+    }
+
+    public void deleteNurse() {
+        ObjectDao nurseDao = new ObjectDao();
+        nurseDao.deleteObject(this);
+    }
+
+    public ArrayList<Nurse> getAllNurses() {
+        ArrayList<Nurse> nurses;
+        ObjectDao nurseDao = new ObjectDao();
+        nurses = nurseDao.getAllObjects("Nurse");
+        return nurses;
+
+}
 }

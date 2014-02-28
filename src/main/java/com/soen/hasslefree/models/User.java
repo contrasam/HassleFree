@@ -5,15 +5,14 @@
  */
 package com.soen.hasslefree.models;
 
-import com.soen.hasslefree.dao.UserDao;
+import com.soen.hasslefree.dao.*;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  *
@@ -21,20 +20,40 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
+
+@Entity
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue
     private long userId;
+
+    @Column
     private String email;
+
+    @Column
     private String password;
+
+    @Column
     private String firstName;
+
+    @Column
     private String lastName;
+
+    @Column
     private String gender;
+
+    @Column
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateOfBirth;
-    private Address homeAddress;
+
+    @Column
     private String phoneNumber;
 
-    private String simpleDate, message, selectedname;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
+//    private String simpleDate;
+//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 
     public long getUserId() {
         return userId;
@@ -76,14 +95,6 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Address getHomeAddress() {
-        return homeAddress;
-    }
-
-    public void setHomeAddress(Address homeAddress) {
-        this.homeAddress = homeAddress;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -115,58 +126,40 @@ public class User implements Serializable {
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
-        try {
-            UserDao dao = new UserDao();
-            dao.addUser(this);
-            this.message = "User Info Saved Successfull!";
-            clearAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        clearAll();
+        ObjectDao userDao = new ObjectDao();
+        userDao.addObject(this);
     }
 
     public void updateUser() {
-             try {
-            Date dateOfBirth = simpleDateFormat.parse(simpleDate);
-            this.dateOfBirth = dateOfBirth;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            UserDao dao = new UserDao();
-            dao.updateUser(this);
-            this.message = "User Info Update Successfull!";
-            clearAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-            clearAll();
-        }
-    
+        ObjectDao userDao = new ObjectDao();
+        userDao.updateObject(this);
+    }
 
     public void deleteUser() {
-        try {
-        UserDao dao = new UserDao();
-        dao.deleteUser(userId);
-         this.message = "User Info Deleted Successfull!";
-         } catch (Exception e) {
-            e.printStackTrace();
-        }
-            clearAll(); 
+        ObjectDao userDao = new ObjectDao();
+        userDao.deleteObject(this);
     }
 
-    public void setSelectedname(String selectedname) {
-        this.selectedname = selectedname;
-    }
-
-    public Set<User> getAllUsers() {
-        Set<User> users = new HashSet<User>();
-        UserDao dao = new UserDao();
-        users = dao.getAllUsers();
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users; 
+        ObjectDao userDao = new ObjectDao();
+        users = userDao.getAllObjects("users");
         return users;
     }
 
+    private void clearAll() {
+        this.userId = 0;
+        this.firstName = "";
+        this.lastName = "";
+        //this.simpleDate = "";
+        this.email = "";
+        this.password = "";
+        this.gender = "";
+        this.phoneNumber = "";
+        this.dateOfBirth = null;
+        this.email = "";
+
+    }
 //    public void fullInfo() {
 //        UserDao dao = new UserDao();
 //        Set<User> lc = dao.getUserById(selectedname);
@@ -178,13 +171,4 @@ public class User implements Serializable {
 //        this.dateOfBirth = lc.get(0).dob;
 //        this.simpleDate = sdf.format(dob);
 //    }
-
-    private void clearAll() {
-        this.firstName = "";
-        this.lastName = "";
-        this.simpleDate = "";
-        this.email = "";
-        this.userId = 0;
-    }
-
 }

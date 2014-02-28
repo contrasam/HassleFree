@@ -5,10 +5,21 @@
  */
 package com.soen.hasslefree.models;
 
-import com.soen.hasslefree.dao.AddressDao;
+
+import com.soen.hasslefree.dao.ObjectDao;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
@@ -16,17 +27,38 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
+
+@Entity
+@Table
 public class Address implements java.io.Serializable {
 
+    @Id
+    @GeneratedValue
     private long addressId;
+
+    @Column
     private String streetNumber;
+
+    @Column
     private String streetName;
+
+    @Column
     private String apartmentNumber;
+
+    @Column
     private String city;
+
+    @Column
     private String province;
+
+    @Column
     private String postalCode;
+
+    @Column
     private String country;
-    private Set<Patient> patients;
+
+    @OneToMany(mappedBy = "homeAddress", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Patient> associatedPatients = new HashSet<Patient>(0);
 
     public Address() {
     }
@@ -105,22 +137,33 @@ public class Address implements java.io.Serializable {
         this.country = country;
     }
 
-    public Set<Patient> getPatients() {
-        return patients;
+    public Set<Patient> getAssociatedPatients() {
+        return associatedPatients;
     }
 
-    public void setPatients(Set<Patient> patients) {
-        this.patients = patients;
+    public void setAssociatedPatients(Set<Patient> associatedPatients) {
+        this.associatedPatients = associatedPatients;
     }
 
     public void saveAddress() {
-        try {
-            AddressDao address = new AddressDao();
-            address.addAddress(this);
-            System.out.println("Address saved to database");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ObjectDao addressDao = new ObjectDao();
+        addressDao.addObject(this);
     }
-    
+
+    public void updateAddress() {
+        ObjectDao addressDao = new ObjectDao();
+        addressDao.updateObject(this);
+    }
+
+    public void deleteAddress() {
+        ObjectDao addressDao = new ObjectDao();
+        addressDao.deleteObject(this);
+    }
+
+    public ArrayList<Address> getAllAddresses() {
+        ArrayList<Address> addresses;
+        ObjectDao userDao = new ObjectDao();
+        addresses = userDao.getAllObjects("Address");
+        return addresses;
+    }
 }
