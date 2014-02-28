@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Default Header</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet"></link>
+            <link href="http://#{request.serverName}:8080/css/bootstrap.min.css" rel="stylesheet"></link>
+            <script src="http://#{request.serverName}:8080/js/bootstrap.js"></script>
+            <script src="http://#{request.serverName}:8080/js/jquery/jquery.js"></script>
+            <style>
+                .mainLogo {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto 
+                }
+                #footer{
+                    bottom: -50px;
+                    height: 50px;
+                    left: 0;
+                    position: absolute;
+                    right: 0;
+                }
+            </style>
+            <img src="http://#{request.serverName}:8080/img/Meet-The-Doc.png" class="mainLogo"></img>
+            <div>
+                <h:form rendered="#{not empty request.remoteUser}">
+                    <h:commandLink value="Logout" action="#{loginBean.logout}" /> |
+                    <h:link value="Home" outcome="home" />
+                </h:form>
+                <h:link value="Login" outcome="index" rendered="#{empty request.remoteUser}" />
+            </div>
+        </ui:composition>
+    </h:body>
+</html>
+

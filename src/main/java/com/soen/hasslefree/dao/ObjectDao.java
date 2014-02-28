@@ -5,7 +5,6 @@
  */
 package com.soen.hasslefree.dao;
 
-//import com.soen.employeeinheritance.models.*;
 import java.util.ArrayList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

@@ -2,42 +2,38 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>HassleFree Clinic System</title>
+        <title>HassleFree Clinic System Login</title>
     </h:head>
     <h:body>
-        <h:form>
-            <!--            <h:panelGrid id="addressPanel" columns="2" border="1"
-                                     cellpadding="5" cellspacing="1">
-                            <f:facet name="header">
-                                <h:outputText value="Add Address"/>
-                                <h:outputLabel value="Street No."/>
-                                <h:inputText value="#{address.streetNumber}" id="streetNum"/>
-                                <h:outputLabel value="street Name"/>
-                                <h:inputText value="#{address.streetName}" id="streetName"/>
-                                <h:outputLabel value="Apartment/Suite No."/>
-                                <h:inputText value="#{address.apartmentNumber}" id="aptNum"/>
-                                <h:outputLabel value="City"/>
-                                <h:inputText value="#{address.city}" id="city"/>
-                                <h:outputLabel value="Province"/>
-                                <h:inputText value="#{address.province}" id="province"/>
-                                <h:outputLabel value="Postal Code"/>
-                                <h:inputText value="#{address.postalCode}" id="postalCode"/>
-                                <h:outputLabel value="Country"/>
-                                <h:inputText value="#{address.country}" id="country"/>
-                                <f:facet name="footer">
-                                    <h:commandButton value="Save" action="#{address.saveAddress}">
-                                        <f:ajax render="streetNum streetName aptNum city province postalCode country" execute="@form"/>
-                                    </h:commandButton>
-                                </f:facet>
-                            </f:facet>
-                        </h:panelGrid>-->
-
-            <h:selectOneMenu>
-
-            </h:selectOneMenu>
-        </h:form>
+        <div id="header">
+            <ui:insert name="header" >
+                <ui:include src="/templates/header.xhtml" />
+            </ui:insert>
+        </div>
+        <div class="jumbotron">
+            <h:form>
+                <h:outputLabel for="emailInput">
+                    Email ID
+                </h:outputLabel><br/>
+                <h:inputText id="usernameInput" value="#{loginBean.username}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br />
+                <h:outputLabel for="passwordInput">
+                    Password
+                </h:outputLabel><br/>
+                <h:inputSecret id="passwordInput" value="#{loginBean.password}" 
+                               required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br />
+                <br />
+                <h:commandButton value="Login" 
+                                 action="#{loginBean.login}" class="btn btn-primary"/>
+            </h:form>
+        </div>
+        <ui:insert name="footer">
+            <ui:include src="/templates/footer.xhtml" />
+        </ui:insert>
     </h:body>
 </html>
 
