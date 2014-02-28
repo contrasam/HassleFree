@@ -22,7 +22,7 @@ import javax.persistence.*;
 @RequestScoped
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
 
@@ -143,7 +143,7 @@ public class User implements Serializable {
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users; 
         ObjectDao userDao = new ObjectDao();
-        users = userDao.getAllObjects("users");
+        users = userDao.getAllObjects("user");
         return users;
     }
 
