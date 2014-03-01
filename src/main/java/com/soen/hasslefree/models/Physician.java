@@ -9,9 +9,7 @@ import com.soen.hasslefree.dao.ObjectDao;
 import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -22,7 +20,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import org.hibernate.Session;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -38,7 +35,7 @@ import org.joda.time.DateTime;
 @Table
 @PrimaryKeyJoinColumn(name = "userId")
 public class Physician extends User implements Serializable {
-
+   
     @Column
     @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime joinedDate;
@@ -48,7 +45,7 @@ public class Physician extends User implements Serializable {
 
     @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Patient> associatedPatients = new HashSet<Patient>(0);
-
+    
     @OneToMany(mappedBy = "relatedPhysician", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<PhysicianAvailability> physicianAvailabilitys = new HashSet<PhysicianAvailability>(0);
 

@@ -20,10 +20,13 @@
     <mapping class="com.soen.hasslefree.models.Appointment"/>
     <mapping class="com.soen.hasslefree.models.AppointmentType"/>
     <mapping class="com.soen.hasslefree.models.Clinic"/>
+    <mapping class="com.soen.hasslefree.models.ClinicHours"/>
     <mapping class="com.soen.hasslefree.models.Nurse"/>
     <mapping class="com.soen.hasslefree.models.Patient"/>
     <!--<mapping class="com.soen.hasslefree.models.Payment"/>-->
     <mapping class="com.soen.hasslefree.models.Physician"/>
+        <mapping class="com.soen.hasslefree.models.PhysicianAvailability"/>
+    <mapping class="com.soen.hasslefree.models.PhysicianTimeSlot"/>
     <mapping class="com.soen.hasslefree.models.Room"/>
     <mapping class="com.soen.hasslefree.models.User"/>
     <!-- List of XML mapping files

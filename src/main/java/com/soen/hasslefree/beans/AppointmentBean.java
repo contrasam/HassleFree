@@ -12,6 +12,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import org.joda.time.MutableDateTime;
 
 /**
@@ -134,6 +135,10 @@ public class AppointmentBean implements Serializable {
             holder.put(fullName, userId);
         }
         this.physicanList = holder;
+    }
+
+    public void refreshAppointmentSlots(AjaxBehaviorEvent event) {
+        
     }
 
     public void makeAppointment() {

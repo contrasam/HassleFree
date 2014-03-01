@@ -94,7 +94,7 @@ public class Clinic implements Serializable {
         clinicDao.deleteObject(this);
     }
 
-    public ArrayList<Clinic> getAllClinics() {
+    public static ArrayList<Clinic> getAllClinics() {
         ArrayList<Clinic> clinics;
         ObjectDao AppointmentDao = new ObjectDao();
         clinics = AppointmentDao.getAllObjects("Clinic");
