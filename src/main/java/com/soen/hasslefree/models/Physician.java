@@ -6,6 +6,7 @@
 package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.ObjectDao;
+import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import org.hibernate.Session;
 
 /**
  *
@@ -41,8 +43,7 @@ public class Physician extends User implements Serializable {
     @Column
     private String speciality;
 
-   
-    @OneToMany(mappedBy = "familyDoctor",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Patient> associatedPatients = new HashSet<Patient>(0);
 
     public Date getJoinedDate() {
@@ -68,6 +69,7 @@ public class Physician extends User implements Serializable {
     public void setAssociatedPatients(Set<Patient> associatedPatients) {
         this.associatedPatients = associatedPatients;
     }
+
     public void savePhysician() {
         ObjectDao physicianDao = new ObjectDao();
         physicianDao.addObject(this);
@@ -83,7 +85,23 @@ public class Physician extends User implements Serializable {
         physicianDao.deleteObject(this);
     }
 
-    public ArrayList<Physician> getAllPhysicians() {
+    public static Physician getPhysicianById(int id) {
+        Physician physicianHolder = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            physicianHolder = (Physician) session.get(Physician.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return physicianHolder;
+    }
+
+    public static ArrayList<Physician> getAllPhysicians() {
         ArrayList<Physician> physicians;
         ObjectDao physicianDao = new ObjectDao();
         physicians = physicianDao.getAllObjects("Physician");

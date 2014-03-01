@@ -19,22 +19,29 @@
                 <h:outputLabel for="usernameInput">
                     Appointment Type
                 </h:outputLabel><br/>
-                <h:selectOneListbox value="#{appointmentBean.appointmentType}">
+                <h:selectOneListbox value="#{appointmentBean.appointmentType}" required="true">
                     <f:selectItems value="#{appointmentBean.appointmentTypeList}" />
                 </h:selectOneListbox><br />
+                <h:outputLabel for="usernameInput">
+                    Select Physician
+                </h:outputLabel><br/>
+                <h:selectOneMenu value="#{appointmentBean.relatedPhysician}">
+   			<f:selectItems value="#{appointmentBean.physicanList}" />
+   		</h:selectOneMenu>
                 <h:outputLabel for="DateInput">
                     Date Of Appointment
                 </h:outputLabel><br/> 
-                <p:calendar value="#{appointmentBean.dateTimeOfAppointment}" id="popupButtonCal" showOn="button"/>
+                <p:calendar value="#{appointmentBean.dateHolder}" navigator="true" id="popupButtonCal" showOn="button" showButtonPanel="true" pattern="yyyy-M-d" required="true"/>
                 <br/>
                 <h:outputLabel for="TimeInput">
                     Time Of Appointment
                 </h:outputLabel><br/>
-                <h:selectOneListbox value="#{appointmentBean.dateTimeOfAppointment.time}">
+                <h:selectOneListbox value="#{appointmentBean.timeHolder}" required="true">
                     <f:selectItems value="#{appointmentBean.avaliableTimeList}" />
                 </h:selectOneListbox><br/><br/>
                 <h:commandButton value="Make Appointment" 
-                                 action="#{loginBean.login}" class="btn btn-primary"/>
+                                 action="#{appointmentBean.makeAppointment}" class="btn btn-primary" id="appointment"/>
+                <h:message for="appointment"/> 
             </h:form>
         </div>
         <ui:insert name="footer">

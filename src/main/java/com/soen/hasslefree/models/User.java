@@ -160,15 +160,4 @@ public class User implements Serializable {
         this.email = "";
 
     }
-//    public void fullInfo() {
-//        UserDao dao = new UserDao();
-//        Set<User> lc = dao.getUserById(selectedname);
-//        System.out.println(lc.get(0).firstName);
-//        this.userId = lc get(0).custId;
-//        this.firstName = lc.get(0).firstName;
-//        this.lastName = lc.get(0).lastName;
-//        this.email = lc.get(0).email;
-//        this.dateOfBirth = lc.get(0).dob;
-//        this.simpleDate = sdf.format(dob);
-//    }
 }

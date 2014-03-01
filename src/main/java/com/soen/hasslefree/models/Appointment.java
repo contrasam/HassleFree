@@ -8,21 +8,18 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.ObjectDao;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -38,28 +35,25 @@ public class Appointment implements Serializable {
     @Id
     @GeneratedValue
     private long appointmentID;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date startTime;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date endTime;
-    
-    @ManyToOne(cascade=CascadeType.ALL)
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Physician relatedPhysician;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Patient relatedPatient;
+
+    @Column
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    private DateTime startTime;
+
+    @Column
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    private DateTime endTime;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private AppointmentType appointmentType;
-    
 
     public Appointment() {
-    }
-
-    public Appointment(int year, int month, int day, int startHour, int startMinutes, String appointmentType) {
-//        this.appointmentType = new AppointmentType();
-//        this.appointmentType.setTypeName(appointmentType);
-//        this.appointmentType.setDuration(20);
-//        this.appointmentSlot = new TimeSlot(year, month, day, startHour, startMinutes);
-//        GregorianCalendar tempCalendar = (GregorianCalendar) appointmentSlot.getStart().clone();
-//        tempCalendar.add(Calendar.MINUTE, this.appointmentType.getDuration());
-//        this.appointmentSlot.setEnd(tempCalendar);
     }
 
     public long getAppointmentID() {
@@ -70,23 +64,21 @@ public class Appointment implements Serializable {
         this.appointmentID = appointmentID;
     }
 
-    public Date getStartTime() {
+    public DateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(DateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public DateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(DateTime endTime) {
         this.endTime = endTime;
     }
-
-   
 
     public AppointmentType getAppointmentType() {
         return appointmentType;
@@ -95,8 +87,24 @@ public class Appointment implements Serializable {
     public void setAppointmentType(AppointmentType appointmentType) {
         this.appointmentType = appointmentType;
     }
-       
-     public void saveAppointment() {
+
+    public Physician getRelatedPhysician() {
+        return relatedPhysician;
+    }
+
+    public void setRelatedPhysician(Physician relatedPhysician) {
+        this.relatedPhysician = relatedPhysician;
+    }
+
+    public Patient getRelatedPatient() {
+        return relatedPatient;
+    }
+
+    public void setRelatedPatient(Patient relatedPatient) {
+        this.relatedPatient = relatedPatient;
+    }
+
+    public void saveAppointment() {
         ObjectDao appointmentDao = new ObjectDao();
         appointmentDao.addObject(this);
     }

@@ -107,7 +107,7 @@ public class AppointmentType implements Serializable {
         appointmentTypeDao.deleteObject(this);
     }
 
-    public ArrayList<AppointmentType> getAllAppointmentTypes() {
+    public static ArrayList<AppointmentType> getAllAppointmentTypes() {
         ArrayList<AppointmentType> appointmentTypes;
         ObjectDao appointmentTypeDao = new ObjectDao();
         appointmentTypes = appointmentTypeDao.getAllObjects("AppointmentType");
