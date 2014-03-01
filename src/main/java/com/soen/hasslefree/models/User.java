@@ -8,12 +8,13 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.Entity;
 import javax.persistence.*;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -48,8 +49,8 @@ public class User implements Serializable {
     private String gender;
 
     @Column
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dateOfBirth;
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    private DateTime dateOfBirth;
 
     @Column
     private String phoneNumber;
@@ -100,11 +101,11 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-    public Date getDateOfBirth() {
+    public DateTime getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(DateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

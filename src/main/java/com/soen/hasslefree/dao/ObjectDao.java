@@ -57,7 +57,25 @@ public class ObjectDao {
         }
         return physicianID;
     }
-    
+        public void addOrUpdateObject(Object object) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            // Adding Object
+            session.saveOrUpdate(object);
+            this.message = "Info addes or update Successfully!";
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+    }
     /* Method to  READ all the Physicians */
 
     public ArrayList getAllObjects(String tableName) {

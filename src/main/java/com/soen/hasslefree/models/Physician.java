@@ -24,6 +24,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import org.hibernate.Session;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -38,8 +40,8 @@ import org.hibernate.Session;
 public class Physician extends User implements Serializable {
 
     @Column
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date joinedDate;
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    private DateTime joinedDate;
 
     @Column
     private String speciality;
@@ -47,14 +49,14 @@ public class Physician extends User implements Serializable {
     @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Patient> associatedPatients = new HashSet<Patient>(0);
 
-    @OneToMany(mappedBy = "relatedPhysician")
-    private List<Appointment> appointments;
+    @OneToMany(mappedBy = "relatedPhysician", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<PhysicianAvailability> physicianAvailabilitys = new HashSet<PhysicianAvailability>(0);
 
-    public Date getJoinedDate() {
+    public DateTime getJoinedDate() {
         return joinedDate;
     }
 
-    public void setJoinedDate(Date joinedDate) {
+    public void setJoinedDate(DateTime joinedDate) {
         this.joinedDate = joinedDate;
     }
 
