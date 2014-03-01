@@ -11,7 +11,7 @@
     <h:body>
         <div id="header">
             <ui:insert name="header" >
-                <ui:include src="/templates/header_with_no_jQ.xhtml" />
+                <ui:include src="/templates/header.xhtml" />
             </ui:insert>
         </div>
         <div class="jumbotron">
@@ -21,18 +21,18 @@
                 </h:outputLabel><br/>
                 <h:selectOneListbox value="#{appointmentBean.appointmentType}" required="true">
                     <f:selectItems value="#{appointmentBean.appointmentTypeList}" />
-                </h:selectOneListbox><br />
+                </h:selectOneListbox><br /><br/> 
                 <h:outputLabel for="usernameInput">
                     Select Physician
                 </h:outputLabel><br/>
                 <h:selectOneMenu value="#{appointmentBean.relatedPhysician}">
    			<f:selectItems value="#{appointmentBean.physicanList}" />
-   		</h:selectOneMenu>
+   		</h:selectOneMenu><br/><br/> 
                 <h:outputLabel for="DateInput">
                     Date Of Appointment
                 </h:outputLabel><br/> 
                 <p:calendar value="#{appointmentBean.dateHolder}" navigator="true" id="popupButtonCal" showOn="button" showButtonPanel="true" pattern="yyyy-M-d" required="true"/>
-                <br/>
+                <br/><br/> 
                 <h:outputLabel for="TimeInput">
                     Time Of Appointment
                 </h:outputLabel><br/>
@@ -42,10 +42,11 @@
                 <h:commandButton value="Make Appointment" 
                                  action="#{appointmentBean.makeAppointment}" class="btn btn-primary" id="appointment"/>
                 <h:message for="appointment"/> 
+                <input type="hidden" name="patientEmail" value="#{request.userPrincipal.name.toString()}" />
             </h:form>
         </div>
         <ui:insert name="footer">
-            <ui:include src="/templates/footer.xhtml" />
+            <ui:include src="/templates/footer_wo_jQ.xhtml" />
         </ui:insert>
     </h:body>
 </html>

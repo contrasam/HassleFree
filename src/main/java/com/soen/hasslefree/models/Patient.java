@@ -6,6 +6,7 @@
 package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.ObjectDao;
+import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
@@ -17,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -64,7 +67,41 @@ public class Patient extends User implements Serializable {
     public void setHomeAddress(Address homeAddress) {
         this.homeAddress = homeAddress;
     }
+
     // TODO: Credit Card information is not yet relatedto the patient
+    public static Patient getPatientId(long id) {
+        Patient patientHolder = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            patientHolder = (Patient) session.get(Patient.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return patientHolder;
+    }
+
+    public static User getPatientByEmail(String email) {
+        User patientHolder = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            patientHolder = (User) session.createCriteria(User.class).
+                    add(Restrictions.eq("email", email)).
+                    uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return patientHolder;
+    }
 
     public void savePatient() {
         ObjectDao patientDao = new ObjectDao();

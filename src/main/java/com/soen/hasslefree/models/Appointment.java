@@ -36,11 +36,13 @@ public class Appointment implements Serializable {
     @GeneratedValue
     private long appointmentID;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    
+    @ManyToOne
     private Physician relatedPhysician;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Patient relatedPatient;
+    
+    @ManyToOne
+    private User relatedPatient;
 
     @Column
     @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
@@ -96,11 +98,11 @@ public class Appointment implements Serializable {
         this.relatedPhysician = relatedPhysician;
     }
 
-    public Patient getRelatedPatient() {
+    public User getRelatedPatient() {
         return relatedPatient;
     }
 
-    public void setRelatedPatient(Patient relatedPatient) {
+    public void setRelatedPatient(User relatedPatient) {
         this.relatedPatient = relatedPatient;
     }
 

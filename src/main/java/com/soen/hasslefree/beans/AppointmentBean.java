@@ -2,6 +2,7 @@ package com.soen.hasslefree.beans;
 
 import com.soen.hasslefree.models.Appointment;
 import com.soen.hasslefree.models.AppointmentType;
+import com.soen.hasslefree.models.Patient;
 import com.soen.hasslefree.models.Physician;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.joda.time.MutableDateTime;
 
 /**
@@ -138,6 +140,9 @@ public class AppointmentBean implements Serializable {
         //Initialization
         Appointment appointment = new Appointment();
         MutableDateTime startDateTime = new MutableDateTime(dateHolder);
+        // Getting email id of the user through the facesContext
+        String patientEmail = FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap().get("patientEmail");
         int duration = 0;
 
         // Spliting the hours and the minutes from the time value string
@@ -162,6 +167,8 @@ public class AppointmentBean implements Serializable {
         //Making the appointment (saving to database)
         appointment.setStartTime(startDateTime.toDateTime());
         appointment.setEndTime(endDateTime.toDateTime());
+        appointment.setRelatedPhysician(Physician.getPhysicianById(relatedPhysician));
+        appointment.setRelatedPatient(Patient.getPatientByEmail(patientEmail));
         appointment.saveAppointment();
     }
 }

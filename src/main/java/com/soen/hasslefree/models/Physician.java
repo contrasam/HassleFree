@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -45,6 +46,9 @@ public class Physician extends User implements Serializable {
 
     @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Patient> associatedPatients = new HashSet<Patient>(0);
+
+    @OneToMany(mappedBy = "relatedPhysician")
+    private List<Appointment> appointments;
 
     public Date getJoinedDate() {
         return joinedDate;
@@ -85,7 +89,7 @@ public class Physician extends User implements Serializable {
         physicianDao.deleteObject(this);
     }
 
-    public static Physician getPhysicianById(int id) {
+    public static Physician getPhysicianById(long id) {
         Physician physicianHolder = null;
         Session session = null;
         try {

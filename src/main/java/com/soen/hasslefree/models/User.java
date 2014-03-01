@@ -9,6 +9,7 @@ import com.soen.hasslefree.dao.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ import javax.persistence.*;
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
+    
 
     @Id
     @GeneratedValue
@@ -51,6 +53,17 @@ public class User implements Serializable {
 
     @Column
     private String phoneNumber;
+    
+    @OneToMany(mappedBy = "relatedPatient")
+    private List<Appointment> appointments;
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 
 //    private String simpleDate;
 //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
