@@ -66,27 +66,27 @@ public class TestDao {
         Room room1 = new Room();
         room1.setRoomNumber("1A");
         room1.setAssociatedClinic(clinic);
-        room1.saveClinic();
+        room1.saveRoom();
 
         Room room2 = new Room();
         room2.setRoomNumber("2A");
         room2.setAssociatedClinic(clinic);
-        room2.saveClinic();
+        room2.saveRoom();
 
         Room room3 = new Room();
         room3.setRoomNumber("3A");
         room3.setAssociatedClinic(clinic);
-        room3.saveClinic();
+        room3.saveRoom();
 
         Room room4 = new Room();
         room4.setRoomNumber("4A");
         room4.setAssociatedClinic(clinic);
-        room4.saveClinic();
+        room4.saveRoom();
 
         Room room5 = new Room();
         room5.setRoomNumber("5A");
         room5.setAssociatedClinic(clinic);
-        room5.saveClinic();
+        room5.saveRoom();
 
         roomSet.add(room1);
         roomSet.add(room2);
