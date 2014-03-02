@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hasslefree?zeroDateTimeBehavior=convertToNull</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">112233</property>
-        <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
-        <!-- Enable Hibernate's automatic session context management -->
-        <property name="current_session_context_class">thread</property>
-        <!-- Disable the second-level cache  -->
-        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-        <property name="show_sql">true</property>
-        <property name="hbm2ddl.auto">update</property>
-        <!-- List of Class mapping files -->
-        <mapping class="com.soen.hasslefree.models.Address"/>
-        <mapping class="com.soen.hasslefree.models.Appointment"/>
-        <mapping class="com.soen.hasslefree.models.AppointmentType"/>
-        <mapping class="com.soen.hasslefree.models.Clinic"/>
-        <mapping class="com.soen.hasslefree.models.ClinicHours"/>
-        <mapping class="com.soen.hasslefree.models.Nurse"/>
-        <mapping class="com.soen.hasslefree.models.Patient"/>
-        <!--<mapping class="com.soen.hasslefree.models.Payment"/>-->
-        <mapping class="com.soen.hasslefree.models.Physician"/>
-        <mapping class="com.soen.hasslefree.models.PhysicianAvailability"/>
-        <mapping class="com.soen.hasslefree.models.PhysicianTimeSlot"/>
-        <mapping class="com.soen.hasslefree.models.Room"/>
-        <mapping class="com.soen.hasslefree.models.RoomTimeSlot"/>
-        <mapping class="com.soen.hasslefree.models.User"/>
-        <!-- List of XML mapping files
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hasslefree?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">quarkuds123</property>
+    <!-- JDBC connection pool (use the built-in) -->
+    <property name="connection.pool_size">1</property>
+    <!-- Enable Hibernate's automatic session context management -->
+    <property name="current_session_context_class">thread</property>
+    <!-- Disable the second-level cache  -->
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+    <property name="show_sql">true</property>
+    <property name="hbm2ddl.auto">update</property>
+    <!-- List of Class mapping files -->
+    <mapping class="com.soen.hasslefree.models.Address"/>
+    <mapping class="com.soen.hasslefree.models.Appointment"/>
+    <mapping class="com.soen.hasslefree.models.AppointmentType"/>
+    <mapping class="com.soen.hasslefree.models.Clinic"/>
+    <mapping class="com.soen.hasslefree.models.ClinicHours"/>
+    <mapping class="com.soen.hasslefree.models.Nurse"/>
+    <mapping class="com.soen.hasslefree.models.Patient"/>
+    <!--<mapping class="com.soen.hasslefree.models.Payment"/>-->
+    <mapping class="com.soen.hasslefree.models.Physician"/>
+    <mapping class="com.soen.hasslefree.models.PhysicianAvailability"/>
+    <mapping class="com.soen.hasslefree.models.PhysicianTimeSlot"/>
+    <mapping class="com.soen.hasslefree.models.Room"/>
+    <mapping class="com.soen.hasslefree.models.RoomTimeSlot"/>
+    <mapping class="com.soen.hasslefree.models.User"/>
+    <!-- List of XML mapping files
         <mapping resource="./hibernatemapping/Address.hbm.xml"/>
         <mapping resource="./hibernatemapping/Clinic.hbm.xml"/>
         <mapping resource="./hibernatemapping/Room.hbm.xml"/>
         <mapping resource="./hibernatemapping/User.hbm.xml"/>  -->
-    </session-factory>
+  </session-factory>
 </hibernate-configuration>

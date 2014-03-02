@@ -84,7 +84,6 @@ public class AppointmentBean implements Serializable {
     }
 
     public HashMap<String, Long> getPhysicanList() {
-        populatePhysicianList();
         return physicanList;
     }
 
@@ -110,29 +109,12 @@ public class AppointmentBean implements Serializable {
     }
 
     public void populateAppointmentTypeList() {
-        List<String> appointment = new ArrayList();
-        appointment.add("Annual Check Up");
-        appointment.add("Drop In");
-        this.appointmentTypeList = appointment;
-    }
-
-    public void populateAvaliableTimeList() {
-        List<String> timeList = new ArrayList();
-        timeList.add("10:00");
-        timeList.add("10:30");
-        timeList.add("11:00");
-        this.avaliableTimeList = timeList;
-    }
-
-    public void populatePhysicianList() {
-        ArrayList<Physician> physicians = Physician.getAllPhysicians();
-        HashMap<String, Long> holder = new HashMap<String, Long>();
-        for (Physician physician : physicians) {
-            String fullName = physician.getFirstName() + " " + physician.getLastName();
-            long userId = physician.getUserId();
-            holder.put(fullName, userId);
+        ArrayList<AppointmentType> appointmentTypes = AppointmentType.getAllAppointmentTypes();
+        ArrayList<String> appointmentTypesList = new ArrayList<String>();
+        for(AppointmentType type : appointmentTypes){
+           appointmentTypesList.add(type.getTypeName());
         }
-        this.physicanList = holder;
+        this.appointmentTypeList = appointmentTypesList;
     }
 
     public void makeAppointment() {
