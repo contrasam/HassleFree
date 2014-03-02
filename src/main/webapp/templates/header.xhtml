@@ -14,19 +14,12 @@
                     margin-left: auto;
                     margin-right: auto 
                 }
-                #footer{
-                    bottom: -50px;
-                    height: 50px;
-                    left: 0;
-                    position: absolute;
-                    right: 0;
-                }
             </style>
-            <img src="http://#{request.serverName}:8080/img/Meet-The-Doc.png" class="mainLogo"></img>
+            <img src="/img/Meet-The-Doc.png" class="mainLogo"></img>
             <div>
                 <h:form rendered="#{not empty request.remoteUser}">
                     <h:commandLink value="Logout" action="#{loginBean.logout}" /> |
-                    <h:link value="Home" outcome="home" />
+                    <h:link value="Home" outcome="/home" />
                 </h:form>
                 <h:link value="Login" outcome="index" rendered="#{empty request.remoteUser}" />
             </div>

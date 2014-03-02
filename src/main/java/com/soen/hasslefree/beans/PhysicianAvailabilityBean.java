@@ -7,6 +7,7 @@ package com.soen.hasslefree.beans;
 
 import com.soen.hasslefree.models.Clinic;
 import com.soen.hasslefree.models.ClinicHours;
+import com.soen.hasslefree.models.PhysicianAvailability;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,6 +100,12 @@ public class PhysicianAvailabilityBean implements Serializable {
         ClinicHours clinicHours = ClinicHours.getClinicHoursByClinicId(clinicId);
         clinicStartTime = clinicHours.getStartTime();
         clinicEndTime = clinicHours.getEndTime();
+        ArrayList<PhysicianAvailability> roomAvailabilitys = new ArrayList();
+        roomAvailabilitys = PhysicianAvailability.getAllPhysicianAvailabilities();
+    }
+    
+    public void addAvailability(){
+        
     }
 
     public void populateClinicList() {

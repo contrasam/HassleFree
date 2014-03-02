@@ -12,9 +12,10 @@
                 <ui:include src="/templates/header.xhtml" />
             </ui:insert>
         </div>
-        Hello #{request.userPrincipal.name.toString()}<br/>
+        Hello <strong>#{request.userPrincipal.name.toString()}</strong><br/>
         Successfully Logged in <br/>
-        <h:link value="Make An Appointment" outcome="protected/appointment" />
+        <h:link value="Make An Appointment" outcome="protected/appointment" /><br/>
+        <h:link value="Add Physician Availability" outcome="protected/physician/availability" />
         <ui:insert name="footer">
             <ui:include src="/templates/footer.xhtml" />
         </ui:insert>

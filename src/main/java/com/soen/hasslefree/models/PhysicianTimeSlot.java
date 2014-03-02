@@ -106,7 +106,7 @@ public class PhysicianTimeSlot implements Serializable {
         physicianTimeSlotDao.deleteObject(this);
     }
 
-    public static PhysicianTimeSlot getPhysicianTimeSlotById(int id) {
+    public static PhysicianTimeSlot getPhysicianTimeSlotById(long id) {
         PhysicianTimeSlot physicianTimeSlotHolder = null;
         Session session = null;
         try {
