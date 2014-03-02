@@ -13,6 +13,8 @@ import javax.faces.bean.RequestScoped;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -34,7 +36,14 @@ public class Appointment implements Serializable {
     @Id
     @GeneratedValue
     private long appointmentID;
+ private enum AppointmentStatus {
 
+        INITIATED, CONFIRMED, COMPLETED
+    };
+        
+
+   @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
     
     @ManyToOne
     private Physician relatedPhysician;
