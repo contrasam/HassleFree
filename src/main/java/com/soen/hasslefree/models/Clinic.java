@@ -100,4 +100,13 @@ public class Clinic implements Serializable {
         clinics = AppointmentDao.getAllObjects("Clinic");
         return clinics;
     }
+    
+    public static void  generateRoomTimeSlots(){
+    ArrayList<Room> rooms = Room.getAllRooms();
+    
+    for(Room room:rooms){
+    room.saveRoom();
+    }
+    
+    }
 }
