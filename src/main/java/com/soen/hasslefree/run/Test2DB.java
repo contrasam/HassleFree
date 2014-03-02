@@ -3,17 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.soen.hasslefree.run;
 
-import com.soen.hasslefree.models.Clinic;
+import com.soen.hasslefree.models.*;
+import java.util.ArrayList;
+import org.joda.time.DateTime;
 
 /**
  *
  * @author Khalid
  */
 public class Test2DB {
+
     public static void main(String[] args) {
-        Clinic.generateRoomTimeSlots();
+
+// Clinic.generateRoomTimeSlots();
+//        DateTime startDate = new DateTime(2014, 3, 2, 8, 0);
+//        DateTime endDate = new DateTime(2014, 3, 2, 10, 0);
+//
+//        Physician physician = Physician.getPhysicianById(1);
+//        PhysicianAvailability physicianAvailability = new PhysicianAvailability();
+//        physicianAvailability.setStartTime(startDate);
+//        physicianAvailability.setEndTime(endDate);
+//        physicianAvailability.setRelatedPhysician(physician);
+//        physicianAvailability.savePhysicianAvailability();
+
+        
+         DateTime startDate = new DateTime(2014, 3, 2, 8, 0);
+         DateTime endDate = new DateTime(2014, 3, 2, 10, 0);
+         ArrayList<PhysicianTimeSlot> dropInSlots;
+         Physician physician = Physician.getPhysicianById(1);
+        Appointment appointment = new Appointment();
+
+        dropInSlots = appointment.getAvailableDropInByPhysicianID(physician.getUserId(), startDate ,  endDate);
+        
+        System.out.println(dropInSlots.size());
+        for(PhysicianTimeSlot slot:dropInSlots){
+            System.out.println("Slot Id:"+slot.getPhysicianTimeSlotID()+" Stat Time:"+ slot.getStartTime()+" End Time:" + slot.getEndTime());
+        }
     }
 }

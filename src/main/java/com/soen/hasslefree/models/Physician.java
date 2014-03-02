@@ -10,6 +10,7 @@ import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -35,6 +36,7 @@ import org.joda.time.DateTime;
 @Table
 @PrimaryKeyJoinColumn(name = "userId")
 public class Physician extends User implements Serializable {
+    
    
     @Column
     @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
@@ -48,6 +50,9 @@ public class Physician extends User implements Serializable {
     
     @OneToMany(mappedBy = "relatedPhysician", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<PhysicianAvailability> physicianAvailabilitys = new HashSet<PhysicianAvailability>(0);
+    
+    @OneToMany(mappedBy = "relatedPhysician",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<PhysicianTimeSlot> physicianTimeSlots=new HashSet<PhysicianTimeSlot>(0);
 
     public DateTime getJoinedDate() {
         return joinedDate;
@@ -73,6 +78,23 @@ public class Physician extends User implements Serializable {
         this.associatedPatients = associatedPatients;
     }
 
+    public Set<PhysicianAvailability> getPhysicianAvailabilitys() {
+        return physicianAvailabilitys;
+    }
+
+    public void setPhysicianAvailabilitys(Set<PhysicianAvailability> physicianAvailabilitys) {
+        this.physicianAvailabilitys = physicianAvailabilitys;
+    }
+
+    public Set<PhysicianTimeSlot> getPhysicianTimeSlots() {
+        return physicianTimeSlots;
+    }
+
+    public void setPhysicianTimeSlots(Set<PhysicianTimeSlot> physicianTimeSlots) {
+        this.physicianTimeSlots = physicianTimeSlots;
+    }
+   
+   
     public void savePhysician() {
         ObjectDao physicianDao = new ObjectDao();
         physicianDao.addObject(this);

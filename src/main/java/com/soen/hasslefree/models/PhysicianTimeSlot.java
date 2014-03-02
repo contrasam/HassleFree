@@ -51,6 +51,9 @@ public class PhysicianTimeSlot implements Serializable {
     
     @ManyToOne(cascade = CascadeType.ALL)
     private PhysicianAvailability physicianAvailability;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Physician relatedPhysician;
 
     public long getPhysicianTimeSlotID() {
         return physicianTimeSlotID;
@@ -91,6 +94,19 @@ public class PhysicianTimeSlot implements Serializable {
     public void setPhysicianAvailability(PhysicianAvailability physicianAvailability) {
         this.physicianAvailability = physicianAvailability;
     }
+
+    public Physician getRelatedPhysician() {
+        return relatedPhysician;
+    }
+
+    public void setRelatedPhysician(Physician relatedPhysician) {
+        this.relatedPhysician = relatedPhysician;
+    }
+    
+    
+    
+    
+    
  public void savePhysicianTimeSlot() {
         ObjectDao physicianTimeSlotDao = new ObjectDao();
         physicianTimeSlotDao.addObject(this);
