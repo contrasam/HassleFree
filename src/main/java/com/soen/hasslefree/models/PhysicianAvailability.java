@@ -160,6 +160,7 @@ public class PhysicianAvailability implements Serializable {
                 newTimeSlot.setEndTime(slotEndTime.toDateTime());
                 newTimeSlot.setIsAvailable(true);
                 newTimeSlot.setPhysicianAvailability(this);
+                newTimeSlot.setRelatedPhysician(this.relatedPhysician);
 
           //</editor-fold>
                 
