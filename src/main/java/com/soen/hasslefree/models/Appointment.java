@@ -259,6 +259,22 @@ public class Appointment implements Serializable {
         }
         return filteredAppointments;
     }
+
+    public static Appointment getAppointmentById(long id) {
+        Appointment appointmentHolder = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            appointmentHolder = (Appointment) session.get(Appointment.class, id);
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return appointmentHolder;
+    }
 }
 
 // 2 loops for searching 

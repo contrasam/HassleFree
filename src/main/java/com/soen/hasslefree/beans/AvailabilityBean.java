@@ -8,8 +8,10 @@ package com.soen.hasslefree.beans;
 import com.soen.hasslefree.models.PhysicianAvailability;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -25,7 +27,9 @@ public class AvailabilityBean implements Serializable {
     public AvailabilityBean() {
     }
 
-    private ArrayList<PhysicianAvailability> availabilityList = PhysicianAvailability.getAllPhysicianAvailabilities();;
+    private ArrayList<PhysicianAvailability> availabilityList = PhysicianAvailability.getAllPhysicianAvailabilities();
+
+    ;
 
     public ArrayList<PhysicianAvailability> getAvailabilityList() {
         return availabilityList;
@@ -35,8 +39,11 @@ public class AvailabilityBean implements Serializable {
         this.availabilityList = availabilityList;
     }
 
-    public void deleteAvailibility(long id) {
+    public String deleteAvailibility() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        long id = Long.parseLong(params.get("availID"));
         PhysicianAvailability tempAvailability = PhysicianAvailability.getPhysicianAvailabilityById(id);
         tempAvailability.deletePhysicianAvailability();
+        return "myAvailabilities";
     }
 }

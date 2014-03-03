@@ -7,8 +7,10 @@ package com.soen.hasslefree.beans;
 
 import com.soen.hasslefree.models.Appointment;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -40,8 +42,12 @@ public class AppointmentFromDbBean {
         userAppointments = tempHolder;
     }
 
-    public void deleteAppointment() {
-
+    public String deleteAppointment() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        long id = Long.parseLong(params.get("appID"));
+        Appointment tempAppointment = Appointment.getAppointmentById(id);
+        tempAppointment.deleteAppointment();
+        return "myAppointments";
     }
 
 }

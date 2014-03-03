@@ -34,7 +34,7 @@ import org.joda.time.MutableDateTime;
  */
 @Entity
 @Table
-public class PhysicianAvailability{
+public class PhysicianAvailability implements Serializable{
 
     @Id
     @GeneratedValue
