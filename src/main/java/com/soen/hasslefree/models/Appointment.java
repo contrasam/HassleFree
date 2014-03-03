@@ -151,7 +151,7 @@ public class Appointment implements Serializable {
     }
 
 // getting the Available DropIn For Any Physician
-    public ArrayList<PhysicianTimeSlot> getAvailableDropInForAnyPhysician(DateTime startDate, DateTime endDate) {
+    public static ArrayList<PhysicianTimeSlot> getAvailableDropInForAnyPhysician(DateTime startDate, DateTime endDate) {
         Session session = null;
         ArrayList<PhysicianTimeSlot> listOfDropInForAnyPhysician = new ArrayList<PhysicianTimeSlot>();
 
@@ -176,7 +176,7 @@ public class Appointment implements Serializable {
     }
 
     // getting the Available DropIn For spicific Physician
-    public ArrayList<PhysicianTimeSlot> getAvailableDropInByPhysicianID(long physicianId, DateTime startDate, DateTime endDate) {
+    public static ArrayList<PhysicianTimeSlot> getAvailableDropInByPhysicianID(long physicianId, DateTime startDate, DateTime endDate) {
 
         Session session = null;
         ArrayList<PhysicianTimeSlot> listOfDropInForPhysician = new ArrayList<PhysicianTimeSlot>();
@@ -201,12 +201,39 @@ public class Appointment implements Serializable {
     }
 
     // getting the Available Check In For spicific Physician
-    public void getAvailableCheckInByPhysicianID(long physicianId, DateTime startDate, DateTime endDate) {
-        this.getAvailableDropInByPhysicianID(physicianId,startDate, endDate);
+    public static ArrayList<ArrayList<PhysicianTimeSlot>> getallAvailableCheckUpsByPhysicianID(long physicianId, DateTime startDate, DateTime endDate) {
         
+        ArrayList<ArrayList<PhysicianTimeSlot>> allAvailableCheckUpList = new ArrayList<ArrayList<PhysicianTimeSlot>>();
+
+        ArrayList<PhysicianTimeSlot> inputDropInListForPhysician;
+
+        inputDropInListForPhysician = Appointment.getAvailableDropInByPhysicianID(physicianId, startDate, endDate);
+
+//         for (PhysicianTimeSlot slot : inputDropInListForPhysician) {
+//            Physician physician = slot.getRelatedPhysician();
+//            System.out.println("Slot Id:" + slot.getPhysicianTimeSlotID() + "        Stat Time:" + slot.getStartTime() + " End Time:" + slot.getEndTime()+ "          Physician Name:" + physician.getFirstName()+" "+ physician.getLastName() );
+//        }
+        for (int i = 0; i < inputDropInListForPhysician.size() - 2; i++) {
+
+            PhysicianTimeSlot firstTimeSlot = inputDropInListForPhysician.get(i);
+            PhysicianTimeSlot secondTimeSlot = inputDropInListForPhysician.get(i + 1);
+            PhysicianTimeSlot thirdTimeSlot = inputDropInListForPhysician.get(i + 2);
+          
+            boolean firstAndSecondLinked = firstTimeSlot.getEndTime().isEqual( secondTimeSlot.getStartTime());
+            boolean secondAndThirdLinked = secondTimeSlot.getEndTime().isEqual(thirdTimeSlot.getStartTime());
+
+            if (firstAndSecondLinked && secondAndThirdLinked) {
+               ArrayList<PhysicianTimeSlot> singleCheckUp = new ArrayList<PhysicianTimeSlot>();
+                singleCheckUp.add(firstTimeSlot);
+                singleCheckUp.add(secondTimeSlot);
+                singleCheckUp.add(thirdTimeSlot);
+                allAvailableCheckUpList.add(singleCheckUp);
+            }
+        }
+        return allAvailableCheckUpList;
     }
 
-    private ArrayList<PhysicianTimeSlot> mentainConcurrentTimeSlot(ArrayList<PhysicianTimeSlot> listOfDropInForAnyPhysician) {
+    private static ArrayList<PhysicianTimeSlot> mentainConcurrentTimeSlot(ArrayList<PhysicianTimeSlot> listOfDropInForAnyPhysician) {
 
         ArrayList<PhysicianTimeSlot> filteredDropInList = new ArrayList<PhysicianTimeSlot>();
         Set<DateTime> startTimeSet = new HashSet<DateTime>();
