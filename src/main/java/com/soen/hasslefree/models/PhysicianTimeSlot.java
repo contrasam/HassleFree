@@ -114,7 +114,7 @@ public class PhysicianTimeSlot implements Serializable {
 
     public void updatePhysicianTimeSlot() {
         ObjectDao physicianTimeSlotDao = new ObjectDao();
-        physicianTimeSlotDao.updateObject(this);
+        physicianTimeSlotDao.addOrUpdateObject(this);
     }
 
     public void deletePhysicianTimeSlot() {

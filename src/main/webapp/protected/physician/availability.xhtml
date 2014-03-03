@@ -40,6 +40,7 @@
                 <br />
                 <h:commandButton value="Add Availability" 
                                  action="#{physicianAvailabilityBean.addAvailability}" class="btn btn-primary"/>
+                <input type="hidden" name="patientEmail" value="#{request.userPrincipal.name.toString()}" />
             </h:form>
         </div>
         <ui:insert name="footer">

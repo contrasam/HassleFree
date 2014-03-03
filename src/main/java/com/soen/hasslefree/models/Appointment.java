@@ -44,7 +44,7 @@ public class Appointment implements Serializable {
     @GeneratedValue
     private long appointmentID;
 
-    private enum AppointmentStatus {
+    public static enum AppointmentStatus {
 
         INITIATED, CONFIRMED, COMPLETED
     };
@@ -135,7 +135,7 @@ public class Appointment implements Serializable {
 
     public void updateAppointment() {
         ObjectDao appointmentDao = new ObjectDao();
-        appointmentDao.updateObject(this);
+        appointmentDao.addOrUpdateObject(this);
     }
 
     public void deleteAppointment() {
@@ -202,7 +202,7 @@ public class Appointment implements Serializable {
 
     // getting the Available Check In For spicific Physician
     public static ArrayList<ArrayList<PhysicianTimeSlot>> getallAvailableCheckUpsByPhysicianID(long physicianId, DateTime startDate, DateTime endDate) {
-        
+
         ArrayList<ArrayList<PhysicianTimeSlot>> allAvailableCheckUpList = new ArrayList<ArrayList<PhysicianTimeSlot>>();
 
         ArrayList<PhysicianTimeSlot> inputDropInListForPhysician;
@@ -218,12 +218,12 @@ public class Appointment implements Serializable {
             PhysicianTimeSlot firstTimeSlot = inputDropInListForPhysician.get(i);
             PhysicianTimeSlot secondTimeSlot = inputDropInListForPhysician.get(i + 1);
             PhysicianTimeSlot thirdTimeSlot = inputDropInListForPhysician.get(i + 2);
-          
-            boolean firstAndSecondLinked = firstTimeSlot.getEndTime().isEqual( secondTimeSlot.getStartTime());
+
+            boolean firstAndSecondLinked = firstTimeSlot.getEndTime().isEqual(secondTimeSlot.getStartTime());
             boolean secondAndThirdLinked = secondTimeSlot.getEndTime().isEqual(thirdTimeSlot.getStartTime());
 
             if (firstAndSecondLinked && secondAndThirdLinked) {
-               ArrayList<PhysicianTimeSlot> singleCheckUp = new ArrayList<PhysicianTimeSlot>();
+                ArrayList<PhysicianTimeSlot> singleCheckUp = new ArrayList<PhysicianTimeSlot>();
                 singleCheckUp.add(firstTimeSlot);
                 singleCheckUp.add(secondTimeSlot);
                 singleCheckUp.add(thirdTimeSlot);
@@ -245,6 +245,19 @@ public class Appointment implements Serializable {
         }
 
         return filteredDropInList;
+    }
+
+    public static ArrayList<Appointment> getAppointmentsByUserId(long id) {
+        ArrayList<Appointment> allAppointments = null;
+        ArrayList<Appointment> filteredAppointments = new ArrayList();
+        ObjectDao appointmentDao = new ObjectDao();
+        allAppointments = appointmentDao.getAllObjects("Appointment");
+        for (Appointment appointment : allAppointments) {
+            if (appointment.getRelatedPatient().getUserId() == id) {
+                filteredAppointments.add(appointment);
+            }
+        }
+        return filteredAppointments;
     }
 }
 

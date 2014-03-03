@@ -1,9 +1,11 @@
 package com.soen.hasslefree.beans;
 
 import com.soen.hasslefree.models.Appointment;
+import com.soen.hasslefree.models.Appointment.AppointmentStatus;
 import com.soen.hasslefree.models.AppointmentType;
 import com.soen.hasslefree.models.Patient;
 import com.soen.hasslefree.models.Physician;
+import com.soen.hasslefree.models.PhysicianTimeSlot;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,6 +86,7 @@ public class AppointmentBean implements Serializable {
     }
 
     public HashMap<String, Long> getPhysicanList() {
+        populatePhysicianList();
         return physicanList;
     }
 
@@ -111,16 +114,19 @@ public class AppointmentBean implements Serializable {
     public void populateAppointmentTypeList() {
         ArrayList<AppointmentType> appointmentTypes = AppointmentType.getAllAppointmentTypes();
         ArrayList<String> appointmentTypesList = new ArrayList<String>();
-        for(AppointmentType type : appointmentTypes){
-           appointmentTypesList.add(type.getTypeName());
+        for (AppointmentType type : appointmentTypes) {
+            appointmentTypesList.add(type.getTypeName());
         }
         this.appointmentTypeList = appointmentTypesList;
     }
 
-    public void makeAppointment() {
+    public String makeAppointment() {
         //Initialization
         Appointment appointment = new Appointment();
         MutableDateTime startDateTime = new MutableDateTime(dateHolder);
+        ArrayList<PhysicianTimeSlot> TimeSlotListDI = null;
+        ArrayList<ArrayList<PhysicianTimeSlot>> TimeSlotListCU = null;
+
         // Getting email id of the user through the facesContext
         String patientEmail = FacesContext.getCurrentInstance().
                 getExternalContext().getRequestParameterMap().get("patientEmail");
@@ -150,6 +156,46 @@ public class AppointmentBean implements Serializable {
         appointment.setEndTime(endDateTime.toDateTime());
         appointment.setRelatedPhysician(Physician.getPhysicianById(relatedPhysician));
         appointment.setRelatedPatient(Patient.getPatientByEmail(patientEmail));
+        appointment.setStatus(AppointmentStatus.INITIATED);
         appointment.saveAppointment();
+
+        // Updating time slots table
+        AppointmentEventListener appointmentEventListener = (AppointmentEventListener) FacesContext.getCurrentInstance().
+                getExternalContext().getSessionMap().get("appointmentEventListener");
+
+        if (appointment.getAppointmentType().getTypeName().equals("Drop In")) {
+            TimeSlotListDI = appointmentEventListener.getTimeSlotListDIBackup();
+            for (PhysicianTimeSlot single : TimeSlotListDI) {
+                if ((single.getStartTime().isEqual(startDateTime) || single.getStartTime().isAfter(startDateTime)) && (single.getEndTime().isEqual(endDateTime) || single.getEndTime().isBefore(endDateTime))) {
+                    single.setIsAvailable(false);
+                    single.updatePhysicianTimeSlot();
+                }
+            }
+        }
+        if (appointment.getAppointmentType().getTypeName().equals("Annual Check Up")) {
+            TimeSlotListCU = appointmentEventListener.getTimeSlotListCUBackup();
+            for (ArrayList<PhysicianTimeSlot> inner : TimeSlotListCU) {
+                for (PhysicianTimeSlot single : inner) {
+                    if ((single.getStartTime().isEqual(startDateTime) || single.getStartTime().isAfter(startDateTime)) && (single.getEndTime().isEqual(endDateTime) || single.getEndTime().isBefore(endDateTime))) {
+                        single.setIsAvailable(false);
+                        single.updatePhysicianTimeSlot();
+                    }
+                }
+            }
+        }
+
+        return "myAppointments";
+    }
+
+    public void populatePhysicianList() {
+        ArrayList<Physician> physicians = Physician.getAllPhysicians();
+        HashMap<String, Long> holder = new HashMap<String, Long>();
+        holder.put("Select a Physician", Long.parseLong("0"));
+        for (Physician physician : physicians) {
+            String fullName = physician.getFirstName() + " " + physician.getLastName();
+            long userId = physician.getUserId();
+            holder.put(fullName, userId);
+        }
+        this.physicanList = holder;
     }
 }

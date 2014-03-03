@@ -6,7 +6,7 @@
 package com.soen.hasslefree.beans;
 
 import com.soen.hasslefree.models.Clinic;
-import com.soen.hasslefree.models.ClinicHours;
+import com.soen.hasslefree.models.Physician;
 import com.soen.hasslefree.models.PhysicianAvailability;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.event.AjaxBehaviorEvent;
-import org.joda.time.DateTime;
+import javax.faces.context.FacesContext;
+import org.joda.time.MutableDateTime;
 
 /**
  *
@@ -29,8 +29,6 @@ public class PhysicianAvailabilityBean implements Serializable {
     private String startTimeHolder;
     private String endTimeHolder;
     private long clinicId;
-    private DateTime clinicStartTime;
-    private DateTime clinicEndTime;
     private HashMap<String, Long> clinicList;
 
     /**
@@ -63,22 +61,6 @@ public class PhysicianAvailabilityBean implements Serializable {
         this.endTimeHolder = endTimeHolder;
     }
 
-    public DateTime getClinicStartTime() {
-        return clinicStartTime;
-    }
-
-    public void setClinicStartTime(DateTime clinicStartTime) {
-        this.clinicStartTime = clinicStartTime;
-    }
-
-    public DateTime getClinicEndTime() {
-        return clinicEndTime;
-    }
-
-    public void setClinicEndTime(DateTime clinicEndTime) {
-        this.clinicEndTime = clinicEndTime;
-    }
-
     public long getClinicId() {
         return clinicId;
     }
@@ -96,16 +78,29 @@ public class PhysicianAvailabilityBean implements Serializable {
         this.clinicList = clinicList;
     }
 
-    public void populateWorkingHours(AjaxBehaviorEvent event) {
-        ClinicHours clinicHours = ClinicHours.getClinicHoursByClinicId(clinicId);
-        clinicStartTime = clinicHours.getStartTime();
-        clinicEndTime = clinicHours.getEndTime();
-        ArrayList<PhysicianAvailability> roomAvailabilitys = new ArrayList();
-        roomAvailabilitys = PhysicianAvailability.getAllPhysicianAvailabilities();
-    }
-    
-    public void addAvailability(){
+    public String addAvailability() {
+        String[] startSplit = startTimeHolder.split(":");
+        String[] endSplit = endTimeHolder.split(":");
+        MutableDateTime startDateTime = new MutableDateTime(dateHolder);
+        MutableDateTime endDateTime = new MutableDateTime(dateHolder);
+        String patientEmail = FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap().get("patientEmail");
+
+        // Setting start time value from string input
+        startDateTime.setHourOfDay(Integer.parseInt(startSplit[0]));
+        startDateTime.setMinuteOfHour(Integer.parseInt(startSplit[1]));
+
+        // Setting end time value from string input
+        endDateTime.setHourOfDay(Integer.parseInt(endSplit[0]));
+        endDateTime.setMinuteOfHour(Integer.parseInt(endSplit[1]));
+
+        PhysicianAvailability pa = new PhysicianAvailability();
+        pa.setStartTime(startDateTime.toDateTime());
+        pa.setEndTime(endDateTime.toDateTime());
+        pa.setRelatedPhysician(Physician.getPhysicianByEmail(patientEmail));
+        pa.savePhysicianAvailability();
         
+        return "myAvailabilities";
     }
 
     public void populateClinicList() {

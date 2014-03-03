@@ -10,7 +10,6 @@ import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -23,6 +22,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import org.hibernate.Session;
 import org.hibernate.annotations.Type;
+import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 
 /**
@@ -131,5 +131,27 @@ public class Physician extends User implements Serializable {
         ObjectDao physicianDao = new ObjectDao();
         physicians = physicianDao.getAllObjects("Physician");
         return physicians;
+    }
+    
+    public static Physician getPhysicianByEmail(String email) {
+        User userHolder = null;
+        Physician physician = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            userHolder = (User) session.createCriteria(User.class).
+                    add(Restrictions.eq("email", email)).
+                    uniqueResult();
+            physician = (Physician) session.createCriteria(User.class).
+                    add(Restrictions.eq("userId", userHolder.getUserId())).
+                    uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return physician;
     }
 }

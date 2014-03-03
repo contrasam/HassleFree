@@ -12,10 +12,12 @@
                 <ui:include src="/templates/header.xhtml" />
             </ui:insert>
         </div>
-        Hello <strong>#{request.userPrincipal.name.toString()}</strong><br/>
-        Successfully Logged in <br/>
-        <h:link value="Make An Appointment" outcome="protected/appointment" /><br/>
-        <h:link value="Add Physician Availability" outcome="protected/physician/availability" />
+        <h4>Hello <strong>#{request.userPrincipal.name.toString()}</strong></h4><br/>
+        <br/>
+        <h:link value="Make An Appointment" outcome="protected/appointment" class="btn btn-primary btn-lg btn-block" style="width:200px; margin:0 auto; margin-left: auto"/><br/>
+        <h:link value="Add Availability" outcome="protected/physician/availability" class="btn btn-primary btn-lg btn-block" style="width:200px; margin:0 auto; margin-left: auto"/><br/>
+        <h:link value="My Availabilities" outcome="protected/physician/myAvailabilities" class="btn btn-primary btn-lg btn-block" style="width:200px; margin:0 auto; margin-left: auto"/><br/>
+        <h:link value="My Appointments" outcome="protected/myAppointments" class="btn btn-primary btn-lg btn-block" style="width:200px; margin:0 auto; margin-left: auto"/><br/>
         <ui:insert name="footer">
             <ui:include src="/templates/footer.xhtml" />
         </ui:insert>

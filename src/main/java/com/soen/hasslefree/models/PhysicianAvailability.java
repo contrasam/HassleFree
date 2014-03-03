@@ -32,12 +32,9 @@ import org.joda.time.MutableDateTime;
  *
  * @author Khalid
  */
-@ManagedBean
-@RequestScoped
-
 @Entity
 @Table
-public class PhysicianAvailability implements Serializable {
+public class PhysicianAvailability{
 
     @Id
     @GeneratedValue
@@ -113,7 +110,7 @@ public class PhysicianAvailability implements Serializable {
         physicianAvailabilityDao.deleteObject(this);
     }
 
-    public static PhysicianAvailability getPhysicianAvailabilityById(int id) {
+    public static PhysicianAvailability getPhysicianAvailabilityById(long id) {
         PhysicianAvailability physicianAvailabilityHolder = null;
         Session session = null;
         try {
