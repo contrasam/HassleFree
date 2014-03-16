@@ -20,7 +20,7 @@ public class TestDao {
 
     public static void main(String[] args) {
 
-//        DateTime dateOfBirth = new DateTime(1976, 12, 31, 11, 0);
+        DateTime dateOfBirth = new DateTime(1976, 12, 31, 11, 0);
 //        DateTime joinedDate = new DateTime(2013, 1, 1, 9, 5);
 //
 //        Physician physician = new Physician();
@@ -35,10 +35,33 @@ public class TestDao {
 //        physician.setSpeciality("General");
 //        physician.setPhoneNumber("514-44-8763");
 //        physician.savePhysician();
-////        
-////        
-////        
-////        
+        
+        
+        Patient patient = new Patient();
+        patient.setFirstName("Pradeep Samuel");
+        patient.setLastName("Daniel");
+        patient.setDateOfBirth(dateOfBirth.toDateTime());
+        patient.setPassword("2222");
+        patient.setEmail("patient@e.com");
+        patient.setGender("Male");
+        patient.setPhoneNumber("514-430-8763");
+        patient.setHealthCardNumber("HRB-673-HY65");
+
+        Address addressOfPatient = new Address();
+        addressOfPatient.setApartmentNumber("2055");
+        addressOfPatient.setCity("Montreal");
+        addressOfPatient.setCountry("Canada");
+        addressOfPatient.setPostalCode("H3H 2J2");
+        addressOfPatient.setProvince("Quebec");
+        addressOfPatient.setStreetName("St Mathieu");
+        addressOfPatient.setStreetNumber("1502");
+        addressOfPatient.saveAddress();
+        patient.setHomeAddress(addressOfPatient);
+        
+        patient.savePatient();
+        
+//        
+//        
 //        DateTime statDate = new DateTime(2014, 3, 3, 8, 0);
 //        DateTime endDate = new DateTime(2014, 3, 3, 17, 0);
 //
@@ -47,11 +70,12 @@ public class TestDao {
 //        pa.setEndTime(endDate);
 //        pa.setRelatedPhysician(physician);
 //        pa.savePhysicianAvailability();
-//        DateTime statDate = new  DateTime(2014, 3, 1, 8, 0);
+
+//        DateTime statDate = new DateTime(2014, 3, 1, 8, 0);
 //        DateTime endDate = new DateTime(2014, 3, 1, 17, 0);
 //        Set<Room> roomSet = new HashSet();
 //        Clinic clinic = new Clinic();
-//        
+//
 //        Address addressOfClinic = new Address();
 //        addressOfClinic.setApartmentNumber("2020");
 //        addressOfClinic.setCity("Montreal");
@@ -98,12 +122,13 @@ public class TestDao {
 //        clinic.setRooms(roomSet);
 //
 //        clinic.saveClinic();
-//        
+//
 //        ClinicHours hrs = new ClinicHours();
 //        hrs.setRelatedClinic(clinic);
 //        hrs.setStartTime(statDate);
 //        hrs.setEndTime(endDate);
 //        hrs.saveClinicHours();
+
 //        ArrayList<ClinicHours> clinicHours = ClinicHours.getAllClinicHours();
 //
 //        ArrayList<PhysicianTimeSlot> timeSlotList = Appointment.getAvailableDropInByPhysicianID(3, clinicHours.get(0).getStartTime(), clinicHours.get(0).getEndTime());
@@ -148,18 +173,17 @@ public class TestDao {
 //            System.out.println("=================================>" + hourCU + ":" + minutesCU);
 //            i+=2;
 //        }
-        
-        ArrayList<Appointment> allAppointments = null;
-        ArrayList<Appointment> filteredAppointments = new ArrayList();
-        ObjectDao appointmentDao = new ObjectDao();
-        allAppointments = appointmentDao.getAllObjects("Appointment");
-        for (Appointment appointment : allAppointments) {
-            if (appointment.getRelatedPatient().getUserId() == 5) {
-                filteredAppointments.add(appointment);
-            }
-        }
-        
-        System.out.println(filteredAppointments);
+//        ArrayList<Appointment> allAppointments = null;
+//        ArrayList<Appointment> filteredAppointments = new ArrayList();
+//        ObjectDao appointmentDao = new ObjectDao();
+//        allAppointments = appointmentDao.getAllObjects("Appointment");
+//        for (Appointment appointment : allAppointments) {
+//            if (appointment.getRelatedPatient().getUserId() == 5) {
+//                filteredAppointments.add(appointment);
+//            }
+//        }
+//        
+//        System.out.println(filteredAppointments);
     }
 
 }

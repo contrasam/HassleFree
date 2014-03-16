@@ -7,8 +7,14 @@ package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.*;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.Entity;
@@ -27,7 +33,6 @@ import org.joda.time.DateTime;
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
-    
 
     @Id
     @GeneratedValue
@@ -54,7 +59,7 @@ public class User implements Serializable {
 
     @Column
     private String phoneNumber;
-    
+
     @OneToMany(mappedBy = "relatedPatient")
     private List<Appointment> appointments;
 
@@ -68,7 +73,6 @@ public class User implements Serializable {
 
 //    private String simpleDate;
 //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
-
     public long getUserId() {
         return userId;
     }
@@ -155,7 +159,7 @@ public class User implements Serializable {
     }
 
     public ArrayList<User> getAllUsers() {
-        ArrayList<User> users; 
+        ArrayList<User> users;
         ObjectDao userDao = new ObjectDao();
         users = userDao.getAllObjects("user");
         return users;
@@ -172,6 +176,42 @@ public class User implements Serializable {
         this.phoneNumber = "";
         this.dateOfBirth = null;
         this.email = "";
+    }
 
+    public static boolean setUserRole(String emailAddress, String roleName) {
+
+        String Jdbc_Driver = "com.mysql.jdbc.Driver";
+        String Db_Url = "jdbc:mysql://localhost:3306/hasslefree";
+        String Db_UserName = "root";
+        String db_Password = "quarkuds123";
+
+        String query = "INSERT INTO user_roles(email,role_name) VALUES (?,?)";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName(Jdbc_Driver);
+            conn = DriverManager.getConnection(Db_Url, Db_UserName, db_Password);
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, emailAddress);
+            stmt.setString(2, roleName);
+            int result = stmt.executeUpdate();
+            return result >= 1;
+        } catch (SQLException se) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, se);
+            return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, se);
+                return false;
+            }
+        }
     }
 }

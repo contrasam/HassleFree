@@ -190,12 +190,12 @@ public class AppointmentBean implements Serializable {
     public void populatePhysicianList() {
         ArrayList<Physician> physicians = Physician.getAllPhysicians();
         HashMap<String, Long> holder = new HashMap<String, Long>();
-        holder.put("Select a Physician", Long.parseLong("0"));
         for (Physician physician : physicians) {
             String fullName = physician.getFirstName() + " " + physician.getLastName();
             long userId = physician.getUserId();
             holder.put(fullName, userId);
         }
+        holder.put(" ", Long.parseLong("0"));
         this.physicanList = holder;
     }
 }

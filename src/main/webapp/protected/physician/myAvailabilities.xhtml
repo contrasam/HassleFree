@@ -39,7 +39,7 @@
         </div>
         <h:form style="width:440px; margin:0 auto; margin-left: auto">
             <h2>My Availabilities</h2>
-            <h:dataTable value="#{availabilityBean.availabilityList}" var="availability"
+            <h:dataTable value="#{availabilityFromDbBean.availabilityList}" var="availability"
                          styleClass="order-table"
                          headerClass="order-table-header"
                          rowClasses="order-table-odd-row,order-table-even-row">
@@ -60,7 +60,7 @@
                     #{availability.endTime.minuteOfHour}0
                 </h:column>
                 <h:column>
-                    <h:commandLink value="Delete Availability" action="#{availabilityBean.deleteAvailibility}" >
+                    <h:commandLink value="Delete Availability" action="#{availabilityFromDbBean.deleteAvailibility}" >
                         <f:param name="availID" value="#{availability.physicianAvailabilityID}" />
                     </h:commandLink>
                 </h:column>

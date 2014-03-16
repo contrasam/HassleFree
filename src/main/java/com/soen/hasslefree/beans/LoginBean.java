@@ -12,6 +12,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class LoginBean implements Serializable{
+public class LoginBean implements Serializable {
 
     private String username;
     private String password;
@@ -44,10 +45,15 @@ public class LoginBean implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
-            request.login(this.username, this.password);    
+            request.login(this.username, this.password);
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             return "error";
+        } finally {
+            if (this.username != null) {
+                HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+                session.setAttribute("loginId", this.username);
+            }
         }
         return "home";
     }

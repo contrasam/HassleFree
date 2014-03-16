@@ -84,7 +84,6 @@ public class Room implements Serializable{
     
      public void saveRoom() {
         ObjectDao clinicDao = new ObjectDao();
-        generateTimeSlots();
         clinicDao.addOrUpdateObject(this);
     }
 

@@ -6,11 +6,14 @@
 package com.soen.hasslefree.beans;
 
 import com.soen.hasslefree.models.Appointment;
+import com.soen.hasslefree.models.Patient;
+import com.soen.hasslefree.models.User;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,7 +41,11 @@ public class AppointmentFromDbBean {
     }
 
     public void populateUserAppointments() {
-        ArrayList<Appointment> tempHolder = Appointment.getAppointmentsByUserId(5);
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+        String loginId = (String) session.getAttribute("loginId");
+        User patient = Patient.getPatientByEmail(loginId);
+        ArrayList<Appointment> tempHolder = Appointment.getAppointmentsByUserId(patient.getUserId());
         userAppointments = tempHolder;
     }
 

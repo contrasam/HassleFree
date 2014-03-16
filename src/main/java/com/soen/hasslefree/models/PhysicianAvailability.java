@@ -34,7 +34,7 @@ import org.joda.time.MutableDateTime;
  */
 @Entity
 @Table
-public class PhysicianAvailability implements Serializable{
+public class PhysicianAvailability implements Serializable {
 
     @Id
     @GeneratedValue
@@ -133,6 +133,19 @@ public class PhysicianAvailability implements Serializable{
         return physicianAvailabilities;
     }
 
+    public static ArrayList<PhysicianAvailability> getAllPhysicianAvailabilitiesforId(long id) {
+        ArrayList<PhysicianAvailability> physicianAvailabilities;
+        ArrayList<PhysicianAvailability> filteredAvailabilities = null;
+        ObjectDao physicianAvailabilityDao = new ObjectDao();
+        physicianAvailabilities = physicianAvailabilityDao.getAllObjects("PhysicianAvailability");
+        for (PhysicianAvailability availability : physicianAvailabilities) {
+            if (availability.getRelatedPhysician().getUserId() == id) {
+                filteredAvailabilities.add(availability);
+            }
+        }
+        return filteredAvailabilities;
+    }
+
     public void generateTimeSlots() {
         MutableDateTime slotStatTime = new MutableDateTime();
         MutableDateTime slotEndTime = new MutableDateTime();
@@ -140,7 +153,7 @@ public class PhysicianAvailability implements Serializable{
         long availabilityStartTime = this.startTime.getMillis();
         long availabilityEndTime = this.endTime.getMillis();
 
-        long availableDuration = availabilityEndTime-availabilityStartTime  ;
+        long availableDuration = availabilityEndTime - availabilityStartTime;
         long slotDuration = 20 * 60 * 1000; // 20 min * 60 sec * 1000 millisecond
 
         if (availableDuration > 0) {
@@ -159,8 +172,7 @@ public class PhysicianAvailability implements Serializable{
                 newTimeSlot.setPhysicianAvailability(this);
                 newTimeSlot.setRelatedPhysician(this.relatedPhysician);
 
-          //</editor-fold>
-                
+                //</editor-fold>
                 this.physicianTimeSlots.add(newTimeSlot);
                 availableDuration = availableDuration - slotDuration;
                 currentSlotStartTime = currentSlotStartTime + slotDuration;
