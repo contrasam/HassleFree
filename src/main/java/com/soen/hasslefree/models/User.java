@@ -7,6 +7,7 @@ package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.*;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -55,19 +56,6 @@ public class User implements Serializable {
     @Column
     private String phoneNumber;
     
-    @OneToMany(mappedBy = "relatedPatient")
-    private List<Appointment> appointments;
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
-    }
-
-//    private String simpleDate;
-//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 
     public long getUserId() {
         return userId;
@@ -134,24 +122,18 @@ public class User implements Serializable {
     }
 
     public void saveUser() {
-//        try {
-//            Date dateOfBirth = simpleDateFormat.parse(simpleDate);
-//            this.dateOfBirth = dateOfBirth;
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         ObjectDao userDao = new ObjectDao();
         userDao.addObject(this);
     }
 
-    public void updateUser() {
+    public void updateUser() throws IllegalAccessException, InvocationTargetException {
         ObjectDao userDao = new ObjectDao();
-        userDao.updateObject(this);
+        userDao.updateObject(this,this.userId,User.class);
     }
 
-    public void deleteUser() {
+    public void deleteUser() throws IllegalAccessException, InvocationTargetException {
         ObjectDao userDao = new ObjectDao();
-        userDao.deleteObject(this);
+        userDao.deleteObject(this,this.userId,User.class);
     }
 
     public ArrayList<User> getAllUsers() {
@@ -161,17 +143,5 @@ public class User implements Serializable {
         return users;
     }
 
-    private void clearAll() {
-        this.userId = 0;
-        this.firstName = "";
-        this.lastName = "";
-        //this.simpleDate = "";
-        this.email = "";
-        this.password = "";
-        this.gender = "";
-        this.phoneNumber = "";
-        this.dateOfBirth = null;
-        this.email = "";
-
-    }
+ 
 }

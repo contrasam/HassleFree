@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.ObjectDao;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 
 /**
@@ -33,42 +34,41 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table
-public class Room implements Serializable{
-   
-    
+public class Room implements Serializable {
+
     @Id
     @GeneratedValue
     private long roomId;
-    
-    @Column
+
+    @Column(unique = true)
     private String roomNumber;
-    
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(nullable = false)
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Clinic associatedClinic;
-    
-     @OneToMany(mappedBy = "relatedRoom",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "relatedRoom", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<RoomTimeSlot> roomTimeSlots;
-  
-     
+
     public long getRoomId() {
         return roomId;
     }
+
     public void setRoomId(long roomId) {
         this.roomId = roomId;
     }
-   
+
     public String getRoomNumber() {
         return roomNumber;
     }
+
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
-    
 
     public Clinic getAssociatedClinic() {
         return associatedClinic;
     }
+
     public void setAssociatedClinic(Clinic associatedClinic) {
         this.associatedClinic = associatedClinic;
     }
@@ -80,22 +80,29 @@ public class Room implements Serializable{
     public void setRoomTimeSlots(List<RoomTimeSlot> roomTimeSlots) {
         this.roomTimeSlots = roomTimeSlots;
     }
- 
-    
-     public void saveRoom() {
+
+    public void saveRoom() {
         ObjectDao clinicDao = new ObjectDao();
-        generateTimeSlots();
         clinicDao.addOrUpdateObject(this);
     }
 
-    public void updateRoom() {
+    public void saveRoom(DateTime clinicStartTime, DateTime clinicEndTime) {
         ObjectDao roomDao = new ObjectDao();
-        roomDao.updateObject(this);
+        AppointmentType dropIn = AppointmentType.searchForAppointmentType("drop");
+        if (dropIn != null) {
+            generateTimeSlots(clinicStartTime, clinicEndTime, dropIn.getDuration());
+        }
+        roomDao.addOrUpdateObject(this);
     }
 
-    public void deleteRoom() {
+    public void updateRoom() throws IllegalAccessException, InvocationTargetException {
         ObjectDao roomDao = new ObjectDao();
-        roomDao.deleteObject(this);
+        roomDao.updateObject(this,this.roomId,Room.class);
+    }
+
+    public void deleteRoom() throws IllegalAccessException, InvocationTargetException {
+        ObjectDao roomDao = new ObjectDao();
+        roomDao.deleteObject(this,this.roomId,Room.class);
     }
 
     public static ArrayList<Room> getAllRooms() {
@@ -104,26 +111,25 @@ public class Room implements Serializable{
         rooms = roomDao.getAllObjects("Room");
         return rooms;
     }
-    
-     public void generateTimeSlots() {
+
+    public void generateTimeSlots(DateTime clinicStartTime, DateTime clinicEndTime, int dropInDurationInMinutes) {
         MutableDateTime slotStatTime = new MutableDateTime();
         MutableDateTime slotEndTime = new MutableDateTime();
 
-        ArrayList<ClinicHours> clinicHoursList = ClinicHours.getAllClinicHours();
-        ClinicHours clinicHours = clinicHoursList.get(0);
-        
-        long availabilityStartTime = clinicHours.getStartTime().getMillis();
-        long availabilityEndTime = clinicHours.getEndTime().getMillis();
+        //ArrayList<ClinicHours> clinicHoursList = ClinicHours.getAllClinicHours();
+        // ClinicHours clinicHours = clinicHoursList.get(0);
+        long availabilityStartTime = clinicStartTime.getMillis();
+        long availabilityEndTime = clinicEndTime.getMillis();
 
-        long availableDuration = availabilityEndTime-availabilityStartTime  ;
-        long slotDuration = 60 * 60 * 1000; // 60 min * 60 sec * 1000 millisecond
+        long availableDuration = availabilityEndTime - availabilityStartTime;
+        long slotDuration = dropInDurationInMinutes * 60 * 1000; // dropIn Duration min * 60 sec * 1000 millisecond
 
         if (availableDuration > 0) {
 
             long currentSlotStartTime = availabilityStartTime;
             boolean stopSlicing = false;
             while (!stopSlicing) {
-                //<editor-fold defaultstate="collapsed" desc="new PhysicianTimeSlot ">
+                //<editor-fold defaultstate="collapsed" desc="new RoomTimeSlot ">
                 RoomTimeSlot newTimeSlot = new RoomTimeSlot();
                 slotStatTime.setMillis(currentSlotStartTime);
                 slotEndTime.setMillis(currentSlotStartTime + slotDuration);
@@ -134,7 +140,6 @@ public class Room implements Serializable{
                 newTimeSlot.setRelatedRoom(this);
 
           //</editor-fold>
-                
                 this.roomTimeSlots.add(newTimeSlot);
                 availableDuration = availableDuration - slotDuration;
                 currentSlotStartTime = currentSlotStartTime + slotDuration;

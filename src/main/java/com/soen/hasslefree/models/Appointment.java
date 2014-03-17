@@ -8,9 +8,9 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.ObjectDao;
 import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -52,12 +53,6 @@ public class Appointment implements Serializable {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    @ManyToOne
-    private Physician relatedPhysician;
-
-    @ManyToOne
-    private User relatedPatient;
-
     @Column
     @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime startTime;
@@ -66,9 +61,25 @@ public class Appointment implements Serializable {
     @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime endTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AppointmentType appointmentType;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Physician relatedPhysician;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Patient relatedPatient;
+
+    public Patient getRelatedPatient() {
+        return relatedPatient;
+    }
+
+    public void setRelatedPatient(Patient relatedPatient) {
+        this.relatedPatient = relatedPatient;
+    }
+
+    
+    
     public Appointment() {
     }
 
@@ -112,13 +123,6 @@ public class Appointment implements Serializable {
         this.relatedPhysician = relatedPhysician;
     }
 
-    public User getRelatedPatient() {
-        return relatedPatient;
-    }
-
-    public void setRelatedPatient(User relatedPatient) {
-        this.relatedPatient = relatedPatient;
-    }
 
     public AppointmentStatus getStatus() {
         return status;
@@ -138,9 +142,9 @@ public class Appointment implements Serializable {
         appointmentDao.addOrUpdateObject(this);
     }
 
-    public void deleteAppointment() {
+    public void deleteAppointment() throws IllegalAccessException, InvocationTargetException {
         ObjectDao appointmentDao = new ObjectDao();
-        appointmentDao.deleteObject(this);
+        appointmentDao.deleteObject(this,this.appointmentID,Appointment.class);
     }
 
     public ArrayList<Appointment> getAllAppointments() {

@@ -8,11 +8,10 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.ObjectDao;
 import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +33,7 @@ import org.joda.time.MutableDateTime;
  */
 @Entity
 @Table
-public class PhysicianAvailability implements Serializable{
+public class PhysicianAvailability implements Serializable {
 
     @Id
     @GeneratedValue
@@ -94,20 +93,23 @@ public class PhysicianAvailability implements Serializable{
         this.physicianTimeSlots = physicianTimeSlots;
     }
 
-    public void savePhysicianAvailability() {
-        ObjectDao physicianAvailabilityDao = new ObjectDao();
-        generateTimeSlots();
-        physicianAvailabilityDao.addOrUpdateObject(this);
+    public boolean savePhysicianAvailability() {
+        boolean hasCommted = false;
+        AppointmentType dropIn = AppointmentType.searchForAppointmentType("drop");
+        if (dropIn != null) {
+            hasCommted = generateTimeSlots(this.startTime, this.endTime, dropIn.getDuration());
+        }
+        return hasCommted;
     }
 
-    public void updatePhysicianAvailability() {
+    public void updatePhysicianAvailability() throws IllegalAccessException, InvocationTargetException {
         ObjectDao physicianAvailabilityDao = new ObjectDao();
-        physicianAvailabilityDao.updateObject(this);
+        physicianAvailabilityDao.updateObject(this,this.getPhysicianAvailabilityID(),PhysicianAvailability.class);
     }
 
-    public void deletePhysicianAvailability() {
+    public void deletePhysicianAvailability() throws IllegalAccessException, InvocationTargetException {
         ObjectDao physicianAvailabilityDao = new ObjectDao();
-        physicianAvailabilityDao.deleteObject(this);
+        physicianAvailabilityDao.deleteObject(this,this.getPhysicianAvailabilityID(),PhysicianAvailability.class);
     }
 
     public static PhysicianAvailability getPhysicianAvailabilityById(long id) {
@@ -133,42 +135,78 @@ public class PhysicianAvailability implements Serializable{
         return physicianAvailabilities;
     }
 
-    public void generateTimeSlots() {
+    public boolean generateTimeSlots(DateTime availabilityStartTime, DateTime availabilityEndTime, int dropInDurationInMinutes) {
         MutableDateTime slotStatTime = new MutableDateTime();
         MutableDateTime slotEndTime = new MutableDateTime();
 
-        long availabilityStartTime = this.startTime.getMillis();
-        long availabilityEndTime = this.endTime.getMillis();
+        long availabilityStartTimeInMillis = availabilityStartTime.getMillis();
+        long availabilityEndTimeInMillis = availabilityEndTime.getMillis();
 
-        long availableDuration = availabilityEndTime-availabilityStartTime  ;
-        long slotDuration = 20 * 60 * 1000; // 20 min * 60 sec * 1000 millisecond
+        long availableDuration = availabilityEndTimeInMillis - availabilityStartTimeInMillis;
+        long slotDuration = dropInDurationInMinutes * 60 * 1000; // 20 min * 60 sec * 1000 millisecond
+        ArrayList<RoomTimeSlot> roomSlots = RoomTimeSlot.getFilteredAvailableRoomSlotsForDate(startTime, endTime);
 
         if (availableDuration > 0) {
 
-            long currentSlotStartTime = availabilityStartTime;
+            long currentSlotStartTime = availabilityStartTimeInMillis;
             boolean stopSlicing = false;
+
             while (!stopSlicing) {
                 //<editor-fold defaultstate="collapsed" desc="new PhysicianTimeSlot ">
-                PhysicianTimeSlot newTimeSlot = new PhysicianTimeSlot();
-                slotStatTime.setMillis(currentSlotStartTime);
-                slotEndTime.setMillis(currentSlotStartTime + slotDuration);
+                int roomSlotIndex = hasFoundFreeRoomSlot(currentSlotStartTime, roomSlots);
+                if (roomSlotIndex < 0) {
+                    return false;
+                } else {
+                    PhysicianTimeSlot newTimeSlot = new PhysicianTimeSlot();
+                    slotStatTime.setMillis(currentSlotStartTime);
+                    slotEndTime.setMillis(currentSlotStartTime + slotDuration);
 
-                newTimeSlot.setStartTime(slotStatTime.toDateTime());
-                newTimeSlot.setEndTime(slotEndTime.toDateTime());
-                newTimeSlot.setIsAvailable(true);
-                newTimeSlot.setPhysicianAvailability(this);
-                newTimeSlot.setRelatedPhysician(this.relatedPhysician);
+                    newTimeSlot.setStartTime(slotStatTime.toDateTime());
+                    newTimeSlot.setEndTime(slotEndTime.toDateTime());
+                    newTimeSlot.setIsAvailable(true);
+                    newTimeSlot.setPhysicianAvailability(this);
+                    newTimeSlot.setRelatedPhysician(this.relatedPhysician);
+                    RoomTimeSlot roomTime = roomSlots.get(roomSlotIndex);
+                    newTimeSlot.setRelatedRoomTimeSlot(roomTime);
 
-          //</editor-fold>
-                
-                this.physicianTimeSlots.add(newTimeSlot);
-                availableDuration = availableDuration - slotDuration;
-                currentSlotStartTime = currentSlotStartTime + slotDuration;
-                if (availableDuration < slotDuration) { // I removed = because I want to add the last slot to the time slots.
-                    stopSlicing = true;
+                    roomTime.setPhysicianTimeSlot(newTimeSlot);
+                    roomTime.setIsAvailable(false);
+               
+                    //</editor-fold>
+                    this.physicianTimeSlots.add(newTimeSlot);
+                    availableDuration = availableDuration - slotDuration;
+                    currentSlotStartTime = currentSlotStartTime + slotDuration;
+                    if (availableDuration < slotDuration) { // I removed = because I want to add the last slot to the time slots.
+                        stopSlicing = true;
+                    }
                 }
             }
 
         }
+
+        ObjectDao physicianAvailabilityDao = new ObjectDao();
+        reserveRoomSlot(roomSlots);
+        physicianAvailabilityDao.addOrUpdateObject(this);
+        return true;
     }
+
+    public boolean reserveRoomSlot(ArrayList<RoomTimeSlot> roomSlots) {
+        boolean hasReserved = false;
+        for (RoomTimeSlot roomSlot : roomSlots) {
+            roomSlot.updateRoomTimeSlot();
+        }
+        return hasReserved;
+    }
+
+    private int hasFoundFreeRoomSlot(long startSlotTimeInMillis, ArrayList<RoomTimeSlot> roomSlots) {
+        int index = -1;
+        for (int i = 0; i < roomSlots.size(); i++) {
+            RoomTimeSlot roomSlot = roomSlots.get(i);
+            if (roomSlot.getStartTime().getMillis() == startSlotTimeInMillis) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
 }

@@ -6,7 +6,7 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hasslefree?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">quarkuds123</property>
+    <property name="hibernate.connection.password">112233</property>
     <!-- JDBC connection pool (use the built-in) -->
     <property name="connection.pool_size">1</property>
     <!-- Enable Hibernate's automatic session context management -->
@@ -30,10 +30,5 @@
     <mapping class="com.soen.hasslefree.models.Room"/>
     <mapping class="com.soen.hasslefree.models.RoomTimeSlot"/>
     <mapping class="com.soen.hasslefree.models.User"/>
-    <!-- List of XML mapping files
-        <mapping resource="./hibernatemapping/Address.hbm.xml"/>
-        <mapping resource="./hibernatemapping/Clinic.hbm.xml"/>
-        <mapping resource="./hibernatemapping/Room.hbm.xml"/>
-        <mapping resource="./hibernatemapping/User.hbm.xml"/>  -->
   </session-factory>
 </hibernate-configuration>
