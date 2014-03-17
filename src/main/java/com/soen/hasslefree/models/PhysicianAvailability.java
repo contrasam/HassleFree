@@ -135,7 +135,20 @@ public class PhysicianAvailability implements Serializable {
         return physicianAvailabilities;
     }
 
-    public boolean generateTimeSlots(DateTime availabilityStartTime, DateTime availabilityEndTime, int dropInDurationInMinutes) {
+    public static ArrayList<PhysicianAvailability> getAllPhysicianAvailabilitiesforId(long id) {
+        ArrayList<PhysicianAvailability> physicianAvailabilities;
+        ArrayList<PhysicianAvailability> filteredAvailabilities = null;
+        ObjectDao physicianAvailabilityDao = new ObjectDao();
+        physicianAvailabilities = physicianAvailabilityDao.getAllObjects("PhysicianAvailability");
+        for (PhysicianAvailability availability : physicianAvailabilities) {
+            if (availability.getRelatedPhysician().getUserId() == id) {
+                filteredAvailabilities.add(availability);
+            }
+        }
+        return filteredAvailabilities;
+    }
+
+    public void generateTimeSlots() {
         MutableDateTime slotStatTime = new MutableDateTime();
         MutableDateTime slotEndTime = new MutableDateTime();
 
