@@ -7,6 +7,7 @@ package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.ObjectDao;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -42,14 +43,14 @@ public class Nurse extends User implements Serializable {
         nurseDao.addObject(this);
     }
 
-    public void updateNurse() {
+    public void updateNurse() throws IllegalAccessException, InvocationTargetException {
         ObjectDao nurseDao = new ObjectDao();
-        nurseDao.updateObject(this);
+        nurseDao.updateObject(this,this.getUserId(),Nurse.class);
     }
 
-    public void deleteNurse() {
+    public void deleteNurse() throws IllegalAccessException, InvocationTargetException {
         ObjectDao nurseDao = new ObjectDao();
-        nurseDao.deleteObject(this);
+        nurseDao.deleteObject(this,this.getUserId(),Nurse.class);
     }
 
     public ArrayList<Nurse> getAllNurses() {

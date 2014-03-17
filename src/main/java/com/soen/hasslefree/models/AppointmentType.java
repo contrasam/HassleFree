@@ -7,6 +7,7 @@ package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.ObjectDao;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -91,20 +92,19 @@ public class AppointmentType implements Serializable {
         this.associatedPatients = associatedPatients;
     }
 
-    
     public void saveAppointmentType() {
         ObjectDao appointmentTypeDao = new ObjectDao();
         appointmentTypeDao.addObject(this);
     }
 
-    public void updateAppointmentType() {
+    public void updateAppointmentType() throws IllegalAccessException, InvocationTargetException {
         ObjectDao appointmentTypeDao = new ObjectDao();
-        appointmentTypeDao.updateObject(this);
+        appointmentTypeDao.updateObject(this,this.AppointmentTypeId,AppointmentType.class);
     }
 
-    public void deleteAppointmentType() {
+    public void deleteAppointmentType() throws IllegalAccessException, InvocationTargetException {
         ObjectDao appointmentTypeDao = new ObjectDao();
-        appointmentTypeDao.deleteObject(this);
+        appointmentTypeDao.deleteObject(this,this.AppointmentTypeId,AppointmentType.class);
     }
 
     public static ArrayList<AppointmentType> getAllAppointmentTypes() {
@@ -112,5 +112,16 @@ public class AppointmentType implements Serializable {
         ObjectDao appointmentTypeDao = new ObjectDao();
         appointmentTypes = appointmentTypeDao.getAllObjects("AppointmentType");
         return appointmentTypes;
+    }
+
+    public static AppointmentType searchForAppointmentType(String value) {
+        
+        ArrayList<AppointmentType> appointmentTypes = AppointmentType.getAllAppointmentTypes();
+        for (AppointmentType type : appointmentTypes) {
+            if (type.getTypeName().toLowerCase().contains(value.toLowerCase())) {
+                return type;
+            }
+        }
+        return null;
     }
 }

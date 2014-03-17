@@ -280,25 +280,3 @@ public class Appointment implements Serializable {
         return appointmentHolder;
     }
 }
-
-// 2 loops for searching 
-//        for (PhysicianTimeSlot slot : listOfDropInForAnyPhysician) {
-//            boolean found = false;
-//            for (PhysicianTimeSlot filteredSlot : filteredDropInList) {
-//                if (slot.getStartTime() == filteredSlot.getStartTime()) {
-//                    found = true;
-//                }
-//            }
-//            if (!found) {
-//                filteredDropInList.add(slot);
-//            }
-//        }
-//        filteredDropInList.add(listOfDropInForAnyPhysician.get(0));
-//        for (PhysicianTimeSlot slot : listOfDropInForAnyPhysician) {
-//
-//            if (slot.getStartTime() == filteredDropInList.get(filteredDropInList.size() - 1).getStartTime()) {
-//                continue;
-//            }
-//            filteredDropInList.add(slot);
-//        }
-

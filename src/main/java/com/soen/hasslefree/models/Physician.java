@@ -8,6 +8,7 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.ObjectDao;
 import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -100,14 +101,15 @@ public class Physician extends User implements Serializable {
         physicianDao.addObject(this);
     }
 
-    public void updatePhysician() {
-        ObjectDao physicianDao = new ObjectDao();
-        physicianDao.updateObject(this);
+    public void updatePhysician() throws IllegalAccessException, InvocationTargetException {
+        ObjectDao<Physician> physicianDao = new ObjectDao<Physician>();
+        
+        physicianDao.updateObject(this,this.getUserId(),Physician.class);
     }
 
-    public void deletePhysician() {
+    public void deletePhysician() throws IllegalAccessException, InvocationTargetException {
         ObjectDao physicianDao = new ObjectDao();
-        physicianDao.deleteObject(this);
+        physicianDao.deleteObject(this,this.getUserId(),Physician.class);
     }
 
     public static Physician getPhysicianById(long id) {

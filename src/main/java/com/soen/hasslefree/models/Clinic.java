@@ -7,6 +7,7 @@ package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.ObjectDao;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
@@ -20,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -84,14 +86,14 @@ public class Clinic implements Serializable {
         clinicDao.addObject(this);
     }
 
-    public void updateClinic() {
+    public void updateClinic() throws IllegalAccessException, InvocationTargetException {
         ObjectDao clinicDao = new ObjectDao();
-        clinicDao.updateObject(this);
+        clinicDao.updateObject(this,this.clinicId,Clinic.class);
     }
 
-    public void deleteClinic() {
+    public void deleteClinic() throws IllegalAccessException, InvocationTargetException {
         ObjectDao clinicDao = new ObjectDao();
-        clinicDao.deleteObject(this);
+        clinicDao.deleteObject(this,this.clinicId,Clinic.class);
     }
 
     public static ArrayList<Clinic> getAllClinics() {
@@ -101,11 +103,10 @@ public class Clinic implements Serializable {
         return clinics;
     }
     
-    public static void  generateRoomTimeSlots(){
+    public static void  generateRoomTimeSlots(DateTime clinicStartTime,DateTime clinicEndTime){
     ArrayList<Room> rooms = Room.getAllRooms();
-    
     for(Room room:rooms){
-    room.saveRoom();
+    room.saveRoom(clinicStartTime,clinicEndTime);
     }
     
     }

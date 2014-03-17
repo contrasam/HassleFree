@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Patient Registration</title>
+    </h:head>
+    <h:body>
+        <div id="header">
+            <ui:insert name="header" >
+                <ui:include src="/templates/header.xhtml" />
+            </ui:insert>
+        </div>
+        <div class="jumbotron">
+            <h:form>
+
+                <h:outputLabel for="firstNameInput">
+                    First Name
+                </h:outputLabel><br/>
+                <h:inputText id="firstNameInput" value="#{registrationBean.firstName}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="lastNameInput">
+                    Last Name
+                </h:outputLabel><br/>
+                <h:inputText id="lastNameInput" value="#{registrationBean.lastName}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="popupButtonCal">
+                    Date Of Birth
+                </h:outputLabel><br/>
+                <p:calendar value="#{registrationBean.dateOfBirth}" navigator="true" id="popupButtonCal" showOn="button" showButtonPanel="true" pattern="yyyy-M-d" required="true" />
+                <br/>
+                <h:outputLabel for="passwordInput">
+                    Password
+                </h:outputLabel><br/>
+                <h:inputSecret id="passwordInput" value="#{registrationBean.password}" 
+                               required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="emailInput">
+                    Email Address
+                </h:outputLabel><br/>
+                <h:inputText id="emailInput" value="#{registrationBean.emailAddress}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="genderInput">
+                    Gender
+                </h:outputLabel><br/>
+                <h:selectOneMenu id="genderInput" value="#{registrationBean.gender}" required="true">
+                    <f:selectItems value="#{registrationBean.genderList}" />
+                </h:selectOneMenu><br />
+                <h:outputLabel for="phoneNumberInput">
+                    Phone Number
+                </h:outputLabel><br/>
+                <h:inputText id="phoneNumberInput" value="#{registrationBean.phoneNumber}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="healthCardNumberInput">
+                    Health Card Number
+                </h:outputLabel><br/>
+                <h:inputText id="healthCardNumberInput" value="#{registrationBean.healthCardNumber}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="aptNumberInput">
+                    Apt./Suite No.
+                </h:outputLabel>
+                <h:inputText id="aptNumberInput" value="#{registrationBean.aptNumber}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <h:outputLabel for="streetNameInput">
+                    Street Name
+                </h:outputLabel>
+                <h:inputText id="streetNameInput" value="#{registrationBean.streetName}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <h:outputLabel for="streetNumberInput">
+                    Street Number
+                </h:outputLabel>
+                <h:inputText id="streetNumberInput" value="#{registrationBean.streetNumber}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="cityInput">
+                    City
+                </h:outputLabel>
+                <h:inputText id="cityInput" value="#{registrationBean.city}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="postalCodeInput">
+                    Postal Code
+                </h:outputLabel>
+                <h:inputText id="postalCodeInput" value="#{registrationBean.postalCode}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="provinceInput">
+                    Province
+                </h:outputLabel>
+                <h:inputText id="provinceInput" value="#{registrationBean.province}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:outputLabel for="countryInput">
+                    Country
+                </h:outputLabel>
+                <h:inputText id="countryInput" value="#{registrationBean.country}" 
+                             required="true" class="form-control" style="width:200px; margin:0 auto; margin-left: auto"/>
+                <br/>
+                <h:commandButton value="Register" 
+                                 action="#{registrationBean.registerPatient}" class="btn btn-primary"/>
+            </h:form>
+        </div>
+        <ui:insert name="footer">
+            <ui:include src="/templates/footer_wo_jQ.xhtml" />
+        </ui:insert>
+    </h:body>
+</html>
+

@@ -8,15 +8,20 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.ObjectDao;
 import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.Session;
 import org.hibernate.annotations.Type;
@@ -44,16 +49,19 @@ public class PhysicianTimeSlot implements Serializable {
     @Column
     @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime endTime;
-    
+
     @Column
     private boolean isAvailable = true;
 
-    
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private PhysicianAvailability physicianAvailability;
-    
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Physician relatedPhysician;
+
+   
+    @OneToOne(mappedBy = "physicianTimeSlot",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private RoomTimeSlot relatedRoomTimeSlot;
 
     public long getPhysicianTimeSlotID() {
         return physicianTimeSlotID;
@@ -102,12 +110,18 @@ public class PhysicianTimeSlot implements Serializable {
     public void setRelatedPhysician(Physician relatedPhysician) {
         this.relatedPhysician = relatedPhysician;
     }
-    
-    
-    
-    
-    
- public void savePhysicianTimeSlot() {
+
+    public RoomTimeSlot getRelatedRoomTimeSlot() {
+        return relatedRoomTimeSlot;
+    }
+
+    public void setRelatedRoomTimeSlot(RoomTimeSlot relatedRoomTimeSlot) {
+        this.relatedRoomTimeSlot = relatedRoomTimeSlot;
+    }
+
+   
+
+    public void savePhysicianTimeSlot() {
         ObjectDao physicianTimeSlotDao = new ObjectDao();
         physicianTimeSlotDao.addObject(this);
     }
@@ -117,9 +131,9 @@ public class PhysicianTimeSlot implements Serializable {
         physicianTimeSlotDao.addOrUpdateObject(this);
     }
 
-    public void deletePhysicianTimeSlot() {
+    public void deletePhysicianTimeSlot() throws IllegalAccessException, InvocationTargetException {
         ObjectDao physicianTimeSlotDao = new ObjectDao();
-        physicianTimeSlotDao.deleteObject(this);
+        physicianTimeSlotDao.deleteObject(this,this.getPhysicianTimeSlotID(),PhysicianTimeSlot.class);
     }
 
     public static PhysicianTimeSlot getPhysicianTimeSlotById(long id) {

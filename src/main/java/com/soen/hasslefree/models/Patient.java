@@ -8,14 +8,18 @@ package com.soen.hasslefree.models;
 import com.soen.hasslefree.dao.ObjectDao;
 import com.soen.hasslefree.persistence.HibernateUtil;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import org.hibernate.Session;
@@ -32,18 +36,32 @@ import org.hibernate.criterion.Restrictions;
 @Table
 @PrimaryKeyJoinColumn(name = "userId")
 public class Patient extends User implements Serializable {
+    
 
     @Column
     private String healthCardNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(nullable = true)
     private Physician familyDoctor;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(nullable = true)
     private Address homeAddress;
+    
+    @OneToMany(mappedBy = "relatedPatient",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Appointment> appointments;
 
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    
+    
     public String getHealthCardNumber() {
         return healthCardNumber;
     }
@@ -85,12 +103,12 @@ public class Patient extends User implements Serializable {
         return patientHolder;
     }
 
-    public static User getPatientByEmail(String email) {
-        User patientHolder = null;
+    public static Patient getPatientByEmail(String email) {
+        Patient patientHolder = null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            patientHolder = (User) session.createCriteria(User.class).
+            patientHolder = (Patient) session.createCriteria(User.class).
                     add(Restrictions.eq("email", email)).
                     uniqueResult();
         } catch (Exception e) {
@@ -108,14 +126,14 @@ public class Patient extends User implements Serializable {
         patientDao.addObject(this);
     }
 
-    public void updatePatient() {
+    public void updatePatient() throws IllegalAccessException, InvocationTargetException {
         ObjectDao patientDao = new ObjectDao();
-        patientDao.updateObject(this);
+        patientDao.updateObject(this,this.getUserId(),Patient.class);
     }
 
-    public void deletePatient() {
+    public void deletePatient() throws IllegalAccessException, InvocationTargetException {
         ObjectDao patientDao = new ObjectDao();
-        patientDao.deleteObject(this);
+        patientDao.deleteObject(this,this.getUserId(),Patient.class);
     }
 
     public ArrayList<Patient> getAllPatients() {

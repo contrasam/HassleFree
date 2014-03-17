@@ -7,6 +7,7 @@ package com.soen.hasslefree.models;
 
 
 import com.soen.hasslefree.dao.ObjectDao;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -150,14 +151,14 @@ public class Address implements java.io.Serializable {
         addressDao.addObject(this);
     }
 
-    public void updateAddress() {
+    public void updateAddress() throws IllegalAccessException, InvocationTargetException {
         ObjectDao addressDao = new ObjectDao();
-        addressDao.updateObject(this);
+        addressDao.updateObject(this,this.addressId,Address.class);
     }
 
-    public void deleteAddress() {
+    public void deleteAddress() throws IllegalAccessException, InvocationTargetException {
         ObjectDao addressDao = new ObjectDao();
-        addressDao.deleteObject(this);
+        addressDao.deleteObject(this,this.addressId,Address.class);
     }
 
     public ArrayList<Address> getAllAddresses() {
