@@ -28,7 +28,7 @@ import org.joda.time.DateTime;
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
-    
+
 
     @Id
     @GeneratedValue
@@ -137,11 +137,11 @@ public class User implements Serializable {
     }
 
     public ArrayList<User> getAllUsers() {
-        ArrayList<User> users; 
+        ArrayList<User> users;
         ObjectDao userDao = new ObjectDao();
         users = userDao.getAllObjects("user");
         return users;
     }
 
  
-}
+    }
