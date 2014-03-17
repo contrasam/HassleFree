@@ -9,6 +9,7 @@ import com.soen.hasslefree.models.Patient;
 import com.soen.hasslefree.models.PhysicianAvailability;
 import com.soen.hasslefree.models.User;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
@@ -45,7 +46,7 @@ public class AvailabilityFromDbBean implements Serializable {
         this.availabilityList = availabilityList;
     }
 
-    public String deleteAvailibility() {
+    public String deleteAvailibility() throws IllegalAccessException, InvocationTargetException {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         long id = Long.parseLong(params.get("availID"));
         PhysicianAvailability tempAvailability = PhysicianAvailability.getPhysicianAvailabilityById(id);

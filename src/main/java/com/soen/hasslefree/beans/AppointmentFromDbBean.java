@@ -8,6 +8,7 @@ package com.soen.hasslefree.beans;
 import com.soen.hasslefree.models.Appointment;
 import com.soen.hasslefree.models.Patient;
 import com.soen.hasslefree.models.User;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
@@ -49,7 +50,7 @@ public class AppointmentFromDbBean {
         userAppointments = tempHolder;
     }
 
-    public String deleteAppointment() {
+    public String deleteAppointment() throws IllegalAccessException, InvocationTargetException {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         long id = Long.parseLong(params.get("appID"));
         Appointment tempAppointment = Appointment.getAppointmentById(id);

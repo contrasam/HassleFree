@@ -7,12 +7,12 @@ package com.soen.hasslefree.models;
 
 import com.soen.hasslefree.dao.*;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -147,18 +147,7 @@ public class User implements Serializable {
         return users;
     }
 
-    private void clearAll() {
-        this.userId = 0;
-        this.firstName = "";
-        this.lastName = "";
-        //this.simpleDate = "";
-        this.email = "";
-        this.password = "";
-        this.gender = "";
-        this.phoneNumber = "";
-        this.dateOfBirth = null;
-        this.email = "";
-    }
+ 
 
     public static boolean setUserRole(String emailAddress, String roleName) {
 
@@ -196,3 +185,4 @@ public class User implements Serializable {
             }
         }
     }
+}

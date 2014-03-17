@@ -148,12 +148,12 @@ public class PhysicianAvailability implements Serializable {
         return filteredAvailabilities;
     }
 
-    public void generateTimeSlots() {
+    public boolean generateTimeSlots(DateTime startTime, DateTime endTime, int dropInDurationInMinutes ) {
         MutableDateTime slotStatTime = new MutableDateTime();
         MutableDateTime slotEndTime = new MutableDateTime();
 
-        long availabilityStartTimeInMillis = availabilityStartTime.getMillis();
-        long availabilityEndTimeInMillis = availabilityEndTime.getMillis();
+        long availabilityStartTimeInMillis = startTime.getMillis();
+        long availabilityEndTimeInMillis = startTime.getMillis();
 
         long availableDuration = availabilityEndTimeInMillis - availabilityStartTimeInMillis;
         long slotDuration = dropInDurationInMinutes * 60 * 1000; // 20 min * 60 sec * 1000 millisecond
