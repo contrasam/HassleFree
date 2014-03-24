@@ -117,7 +117,7 @@ public class ObjectDao<T> {
             
              this.t = (T) session.get(ClassName, id);
             BeanUtils.copyProperties(t, object);
-            session.update(t);
+            session.merge(t);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
